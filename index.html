@@ -6,7 +6,7 @@
     <title>PD Checker — Steve Hunt Partnership</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
@@ -25,18 +25,7 @@
             --text:       #1a1c2e;
             --text-sub:   #4B5563;
             --text-muted: #6B7280;
-            --red:        #D85A30;
-            --red-light:  #FEF2EE;
-            --green:      #1A6B3C;
-            --green-light:#EDFAF2;
-            --amber:      #8B5A00;
-            --amber-light:#FFF8E8;
-            --radius:     10px;
             --ease:       cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        html {
-            scroll-behavior: smooth;
         }
 
         body {
@@ -55,15 +44,12 @@
             border-bottom: 0.5px solid var(--border);
             border-top: 3px solid var(--navy);
             padding: 0 24px;
-            position: sticky;
-            top: 0;
-            z-index: 200;
         }
 
         .header-inner {
-            max-width: 740px;
+            max-width: 900px;
             margin: 0 auto;
-            height: 60px;
+            height: 62px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -77,8 +63,8 @@
         }
 
         .shp-mark {
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             background: var(--navy);
             border-radius: 6px;
             display: flex;
@@ -98,7 +84,6 @@
         .header-titles {
             display: flex;
             flex-direction: column;
-            gap: 0px;
             line-height: 1.2;
         }
 
@@ -113,17 +98,17 @@
 
         .tool-name {
             font-family: 'Outfit', sans-serif;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: 600;
             color: var(--text);
-            letter-spacing: -0.2px;
+            letter-spacing: -0.3px;
         }
 
         .gpdo-badge {
             background: var(--light-blue);
             border: 0.5px solid rgba(47, 84, 150, 0.22);
             border-radius: 20px;
-            padding: 5px 12px;
+            padding: 5px 13px;
             font-family: 'Outfit', sans-serif;
             font-size: 11px;
             font-weight: 600;
@@ -132,513 +117,281 @@
             white-space: nowrap;
         }
 
-        /* ── Tab bar ──────────────────────────────────────────────── */
-        .tab-bar {
+        /* ── Hero ─────────────────────────────────────────────────── */
+        .hero {
             background: var(--white);
             border-bottom: 0.5px solid var(--border);
-            padding: 0 24px;
-            overflow-x: auto;
-            scrollbar-width: none;
+            padding: 36px 24px 32px;
         }
 
-        .tab-bar::-webkit-scrollbar {
-            display: none;
-        }
-
-        .tab-bar-inner {
-            max-width: 740px;
+        .hero-inner {
+            max-width: 900px;
             margin: 0 auto;
-            display: flex;
-            gap: 0;
         }
 
-        .tab {
-            padding: 11px 18px;
+        .hero-eyebrow {
             font-family: 'Outfit', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: default;
-            border: none;
-            background: none;
-            position: relative;
-            color: var(--text-muted);
-            white-space: nowrap;
-            flex-shrink: 0;
-        }
-
-        .tab.active {
-            color: var(--blue);
-            font-weight: 600;
-            cursor: default;
-        }
-
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--blue);
-            border-radius: 2px 2px 0 0;
-        }
-
-        .tab.disabled {
-            opacity: 0.45;
-            cursor: not-allowed;
-        }
-
-        .tab-soon {
-            display: inline-block;
-            font-size: 9px;
-            font-weight: 600;
-            background: #e5e7eb;
-            color: #9ca3af;
-            padding: 1px 5px;
-            border-radius: 8px;
-            letter-spacing: 0.4px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
             text-transform: uppercase;
-            margin-left: 4px;
-            vertical-align: middle;
-            position: relative;
-            top: -1px;
+            color: var(--blue);
+            margin-bottom: 10px;
         }
 
-        /* ── Progress ─────────────────────────────────────────────── */
-        .progress-section {
-            background: var(--white);
-            border-bottom: 0.5px solid var(--border);
-            padding: 0 24px;
+        .hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            line-height: 1.25;
+            margin-bottom: 10px;
         }
 
-        .progress-inner {
-            max-width: 740px;
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-sub);
+            line-height: 1.65;
+            max-width: 600px;
+        }
+
+        /* ── Main ─────────────────────────────────────────────────── */
+        .main {
+            max-width: 900px;
             margin: 0 auto;
-            padding: 11px 0;
+            padding: 32px 24px 56px;
+        }
+
+        /* ── Section header ───────────────────────────────────────── */
+        .section-head {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .step-counter {
-            font-family: 'Outfit', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-muted);
-            min-width: 50px;
-        }
-
-        .progress-bar {
-            flex: 1;
-            height: 3px;
-            background: var(--light-blue);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
-            border-radius: 3px;
-            transition: width 400ms var(--ease);
-            width: 0%;
-        }
-
-        .progress-pct {
-            font-family: 'Outfit', sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            min-width: 34px;
-            text-align: right;
-        }
-
-        /* ── Main wrapper ─────────────────────────────────────────── */
-        .main {
-            max-width: 740px;
-            margin: 0 auto;
-            padding: 28px 24px 48px;
-        }
-
-        /* ── Question card ────────────────────────────────────────── */
-        .question-card {
-            background: var(--white);
-            border: 0.5px solid var(--border);
-            border-radius: var(--radius);
-            padding: 30px 32px;
-            margin-bottom: 18px;
-            transition: opacity 160ms var(--ease), transform 160ms var(--ease);
-        }
-
-        .question-card.slide-out {
-            opacity: 0;
-            transform: translateX(-14px);
-            pointer-events: none;
-        }
-
-        .question-card.slide-in {
-            animation: slideInCard 220ms var(--ease) both;
-        }
-
-        @keyframes slideInCard {
-            from { opacity: 0; transform: translateX(14px); }
-            to   { opacity: 1; transform: translateX(0); }
-        }
-
-        /* section label pill */
-        .section-label {
-            display: inline-flex;
-            align-items: center;
-            background: var(--light-blue);
-            color: var(--blue);
-            border-radius: 20px;
-            padding: 3px 10px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 1.1px;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
-
-        /* question */
-        .question-text {
-            font-family: 'Outfit', sans-serif;
-            font-size: 19px;
-            font-weight: 500;
-            color: var(--text);
-            line-height: 1.42;
-            margin-bottom: 10px;
-            letter-spacing: -0.15px;
-        }
-
-        /* legislative reference */
-        .ref-text {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 12px;
-            font-style: italic;
-            color: var(--text-muted);
-            margin-bottom: 14px;
-            padding-bottom: 14px;
-            border-bottom: 0.5px solid var(--border);
-        }
-
-        /* guidance note */
-        .note-box {
-            background: var(--light-blue);
-            border: 0.5px solid rgba(47, 84, 150, 0.16);
-            border-radius: 8px;
-            padding: 11px 14px;
-            margin-bottom: 22px;
-            display: flex;
-            gap: 9px;
-            align-items: flex-start;
-        }
-
-        .note-icon {
-            font-size: 12px;
-            color: var(--blue);
-            flex-shrink: 0;
-            margin-top: 1px;
-            font-style: normal;
-        }
-
-        .note-text {
-            font-size: 13px;
-            color: var(--text-sub);
-            line-height: 1.58;
-        }
-
-        /* buttons */
-        .button-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-back {
-            margin-right: auto;
-            padding: 8px 14px;
-            background: none;
-            border: 0.5px solid var(--border);
-            border-radius: 7px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 180ms var(--ease);
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .btn-back:hover {
-            border-color: rgba(47, 84, 150, 0.4);
-            color: var(--blue);
-            background: var(--light-blue);
-        }
-
-        .btn-yes {
-            padding: 10px 26px;
-            background: var(--blue);
-            color: white;
-            border: none;
-            border-radius: 7px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 180ms var(--ease);
-            letter-spacing: 0.5px;
-        }
-
-        .btn-yes:hover {
-            background: var(--blue-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(47, 84, 150, 0.28);
-        }
-
-        .btn-yes:active { transform: translateY(0); box-shadow: none; }
-
-        .btn-no {
-            padding: 10px 26px;
-            background: var(--red-light);
-            color: var(--red);
-            border: 0.5px solid rgba(216, 90, 48, 0.28);
-            border-radius: 7px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 180ms var(--ease);
-            letter-spacing: 0.5px;
-        }
-
-        .btn-no:hover {
-            background: rgba(216, 90, 48, 0.12);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(216, 90, 48, 0.14);
-        }
-
-        .btn-no:active { transform: translateY(0); box-shadow: none; }
-
-        /* ── Answer trail ─────────────────────────────────────────── */
-        .trail-section {
-            margin-bottom: 0;
-        }
-
-        .trail-header {
-            font-family: 'Outfit', sans-serif;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1.1px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .trail-header::after {
+        .section-head::after {
             content: '';
             flex: 1;
             height: 0.5px;
             background: var(--border);
         }
 
-        .answer-trail {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
+        /* ── Checker grid ─────────────────────────────────────────── */
+        .checker-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
         }
 
-        .trail-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        /* ── Checker card base ────────────────────────────────────── */
+        .checker-card {
             background: var(--white);
             border: 0.5px solid var(--border);
-            border-radius: 6px;
-            padding: 5px 10px;
-            animation: trailPop 180ms var(--ease) both;
-        }
-
-        @keyframes trailPop {
-            from { opacity: 0; transform: scale(0.88); }
-            to   { opacity: 1; transform: scale(1); }
-        }
-
-        .trail-label {
-            font-family: 'Outfit', sans-serif;
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-sub);
-        }
-
-        .trail-answer {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 700;
-            font-size: 10px;
-            padding: 1px 6px;
-            border-radius: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .trail-answer.yes {
-            background: var(--light-blue);
-            color: var(--blue);
-        }
-
-        .trail-answer.no {
-            background: var(--red-light);
-            color: var(--red);
-        }
-
-        /* ── Outcome card ─────────────────────────────────────────── */
-        .outcome-card {
-            background: var(--white);
-            border: 0.5px solid var(--border);
-            border-radius: var(--radius);
-            padding: 34px 32px;
-            margin-bottom: 18px;
-            animation: slideInCard 280ms var(--ease) both;
-        }
-
-        .outcome-card.pass {
-            border-color: rgba(26, 107, 60, 0.25);
-            border-top: 3px solid var(--green);
-        }
-
-        .outcome-card.warn {
-            border-color: rgba(139, 90, 0, 0.25);
-            border-top: 3px solid #CC7A00;
-        }
-
-        .outcome-card.fail {
-            border-color: rgba(216, 90, 48, 0.25);
-            border-top: 3px solid var(--red);
-        }
-
-        .outcome-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-family: 'Outfit', sans-serif;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
-
-        .outcome-badge.pass { background: var(--green-light); color: var(--green); }
-        .outcome-badge.warn { background: var(--amber-light); color: var(--amber); }
-        .outcome-badge.fail { background: var(--red-light);   color: var(--red);   }
-
-        .outcome-title {
-            font-family: 'Outfit', sans-serif;
-            font-size: 21px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 12px;
-            letter-spacing: -0.25px;
-            line-height: 1.3;
-        }
-
-        .outcome-body {
-            font-size: 14px;
-            color: var(--text-sub);
-            line-height: 1.68;
-            margin-bottom: 18px;
-        }
-
-        .designated-callout {
-            background: var(--light-blue);
-            border: 0.5px solid rgba(47, 84, 150, 0.2);
-            border-left: 3px solid var(--blue);
-            border-radius: 0 8px 8px 0;
-            padding: 12px 14px;
-            font-size: 13px;
-            color: var(--blue);
-            margin-bottom: 18px;
-            line-height: 1.55;
-        }
-
-        .outcome-bullets {
-            list-style: none;
-            margin-bottom: 24px;
+            border-radius: 10px;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 9px;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
         }
 
-        .outcome-bullets li {
+        /* Available card */
+        .checker-card.available {
+            border-color: rgba(47, 84, 150, 0.2);
+            cursor: pointer;
+            transition: transform 200ms var(--ease), box-shadow 200ms var(--ease), border-color 200ms var(--ease);
+        }
+
+        .checker-card.available:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(47, 84, 150, 0.14);
+            border-color: rgba(47, 84, 150, 0.35);
+        }
+
+        .checker-card.available:hover .card-cta {
+            color: var(--blue-dark);
+            gap: 8px;
+        }
+
+        /* Coming soon card */
+        .checker-card.soon {
+            cursor: default;
+            opacity: 0.55;
+        }
+
+        /* ── Card accent bar ──────────────────────────────────────── */
+        .card-accent {
+            height: 3px;
+            background: #d1d5db;
+        }
+
+        .checker-card.available .card-accent {
+            background: linear-gradient(90deg, var(--navy), var(--blue));
+        }
+
+        /* ── Card body ────────────────────────────────────────────── */
+        .card-body {
+            padding: 20px 22px 22px;
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 13.5px;
-            color: var(--text-sub);
-            line-height: 1.55;
+            flex-direction: column;
+            flex: 1;
+            gap: 0;
         }
 
-        .bullet-dash {
-            color: var(--text-muted);
-            flex-shrink: 0;
-            margin-top: 1px;
-            font-size: 12px;
+        /* ── Card meta row ────────────────────────────────────────── */
+        .card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
         }
 
-        .btn-restart {
-            padding: 10px 20px;
-            background: none;
-            border: 0.5px solid var(--border);
-            border-radius: 7px;
+        .card-class {
             font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .card-status {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .card-status.available {
+            background: var(--light-blue);
+            color: var(--blue);
+        }
+
+        .card-status.soon {
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+
+        /* ── Card icon area ───────────────────────────────────────── */
+        .card-icon {
+            margin-bottom: 12px;
+        }
+
+        .card-icon svg {
+            display: block;
+        }
+
+        /* ── Card title ───────────────────────────────────────────── */
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.2px;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        /* ── Card description ─────────────────────────────────────── */
+        .card-desc {
             font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 18px;
+            flex: 1;
+        }
+
+        /* ── Card footer ──────────────────────────────────────────── */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 14px;
+            border-top: 0.5px solid var(--border);
+            margin-top: auto;
+        }
+
+        .card-ref {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
             font-weight: 500;
             color: var(--text-muted);
-            cursor: pointer;
-            transition: all 180ms var(--ease);
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
+            letter-spacing: 0.2px;
         }
 
-        .btn-restart:hover {
-            border-color: rgba(47, 84, 150, 0.4);
+        .card-cta {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
             color: var(--blue);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: gap 180ms var(--ease), color 180ms var(--ease);
+            white-space: nowrap;
+        }
+
+        /* ── Guidance note ────────────────────────────────────────── */
+        .guidance-box {
             background: var(--light-blue);
+            border: 0.5px solid rgba(47, 84, 150, 0.15);
+            border-radius: 8px;
+            padding: 14px 18px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .guidance-icon {
+            font-size: 13px;
+            color: var(--blue);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .guidance-text {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+
+        .guidance-text strong {
+            color: var(--text);
+            font-weight: 600;
         }
 
         /* ── Responsive ───────────────────────────────────────────── */
-        @media (max-width: 600px) {
+        @media (max-width: 780px) {
+            .checker-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 520px) {
+            .checker-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 22px; }
             .firm-name { display: none; }
             .tool-name { font-size: 15px; }
-            .shp-mark { width: 30px; height: 30px; }
-            .shp-mark span { font-size: 11px; }
-
-            .question-card,
-            .outcome-card { padding: 22px 18px; }
-
-            .question-text { font-size: 17px; }
-
-            .btn-yes,
-            .btn-no { padding: 10px 20px; font-size: 13px; }
-
-            .main { padding: 20px 16px 40px; }
-
-            .tab { padding: 10px 13px; font-size: 12px; }
-            .tab-soon { display: none; }
+            .shp-mark { width: 32px; height: 32px; }
+            .main { padding: 24px 16px 48px; }
+            .hero { padding: 24px 16px 22px; }
         }
     </style>
 </head>
 <body>
 
-<!-- ── Site header ──────────────────────────────────────────────────── -->
+<!-- ── Site header ──────────────────────────────────────────────── -->
 <header class="site-header">
     <div class="header-inner">
         <div class="header-left">
@@ -652,517 +405,177 @@
     </div>
 </header>
 
-<!-- ── Tab bar ──────────────────────────────────────────────────────── -->
-<nav class="tab-bar" role="tablist">
-    <div class="tab-bar-inner">
-        <button class="tab active" role="tab" aria-selected="true">Rear extension</button>
-        <button class="tab disabled" role="tab" aria-selected="false" disabled>
-            Side extension <span class="tab-soon">Soon</span>
-        </button>
-        <button class="tab disabled" role="tab" aria-selected="false" disabled>
-            Loft conversion <span class="tab-soon">Soon</span>
-        </button>
-        <button class="tab disabled" role="tab" aria-selected="false" disabled>
-            Outbuilding <span class="tab-soon">Soon</span>
-        </button>
-        <button class="tab disabled" role="tab" aria-selected="false" disabled>
-            Front / porch <span class="tab-soon">Soon</span>
-        </button>
-    </div>
-</nav>
-
-<!-- ── Progress ─────────────────────────────────────────────────────── -->
-<div class="progress-section" id="progressSection">
-    <div class="progress-inner">
-        <span class="step-counter" id="stepCounter">Step 1</span>
-        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        <span class="progress-pct" id="progressPct">0%</span>
+<!-- ── Hero ─────────────────────────────────────────────────────── -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">Assessment tool</div>
+        <h1 class="hero-title">Select an assessment type to begin</h1>
+        <p class="hero-desc">Step-by-step permitted development checks under the Town and Country Planning (General Permitted Development) (England) Order 2015. Each checker walks through the relevant decision criteria and provides an indicative outcome.</p>
     </div>
 </div>
 
-<!-- ── Main ─────────────────────────────────────────────────────────── -->
+<!-- ── Main ─────────────────────────────────────────────────────── -->
 <main class="main">
 
-    <!-- Question area -->
-    <div id="questionArea">
-        <div class="question-card" id="questionCard">
-            <div class="section-label" id="sectionLabel"></div>
-            <p class="question-text" id="questionText"></p>
-            <p class="ref-text" id="refText"></p>
-            <div class="note-box">
-                <span class="note-icon" aria-hidden="true">ℹ</span>
-                <p class="note-text" id="noteText"></p>
+    <div class="section-head">Available assessments</div>
+
+    <div class="checker-grid">
+
+        <!-- ── Rear extension — ACTIVE ─────────────────────────── -->
+        <a href="rear-extension.html" class="checker-card available">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class A</span>
+                    <span class="card-status available">Available</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- House body -->
+                        <rect x="2" y="14" width="22" height="16" rx="1" fill="#EEF3FA" stroke="#2F5496" stroke-width="1.2"/>
+                        <!-- Roof -->
+                        <path d="M1 15 L13 4 L25 15" stroke="#2F5496" stroke-width="1.2" stroke-linejoin="round" fill="#EEF3FA"/>
+                        <!-- Rear extension -->
+                        <rect x="24" y="19" width="18" height="11" rx="1" fill="#2F5496" fill-opacity="0.15" stroke="#2F5496" stroke-width="1.2" stroke-dasharray="2.5 1.5"/>
+                        <!-- Door -->
+                        <rect x="9" y="22" width="5" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Rear extension</h2>
+                <p class="card-desc">Single and two-storey extensions to the rear of a dwellinghouse, including depth limits, height constraints, the Neighbour Consultation Scheme, and curtilage coverage.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class A</span>
+                    <span class="card-cta">Start →</span>
+                </div>
             </div>
-            <div class="button-group">
-                <button class="btn-back" id="btnBack" onclick="handleBack()" style="display:none">
-                    ← Back
-                </button>
-                <button class="btn-yes" onclick="handleAnswer('yes')">YES</button>
-                <button class="btn-no"  onclick="handleAnswer('no')">NO</button>
+        </a>
+
+        <!-- ── Side extension — COMING SOON ───────────────────── -->
+        <div class="checker-card soon">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class A</span>
+                    <span class="card-status soon">Coming soon</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- House body -->
+                        <rect x="10" y="14" width="22" height="16" rx="1" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1.2"/>
+                        <!-- Roof -->
+                        <path d="M9 15 L21 4 L33 15" stroke="#d1d5db" stroke-width="1.2" stroke-linejoin="round" fill="#f3f4f6"/>
+                        <!-- Side extension -->
+                        <rect x="2" y="18" width="9" height="12" rx="1" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="2.5 1.5"/>
+                        <!-- Door -->
+                        <rect x="17" y="22" width="5" height="8" rx="0.5" fill="#d1d5db"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Side extension</h2>
+                <p class="card-desc">Additions to the side elevation of a dwellinghouse, including width restrictions, designation area rules, and the 50% dwelling width limit.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class A</span>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Outcome area -->
-    <div id="outcomeArea" style="display:none">
-        <div class="outcome-card" id="outcomeCard">
-            <div class="outcome-badge" id="outcomeBadge"></div>
-            <h2 class="outcome-title" id="outcomeTitle"></h2>
-            <p class="outcome-body" id="outcomeBody"></p>
-            <div id="designatedCallout" class="designated-callout" style="display:none">
-                <strong>Designated area note:</strong> The property is in a designated area — confirm the extension does not involve cladding or materials changes that would require a separate application.
+        <!-- ── Loft conversion — COMING SOON ──────────────────── -->
+        <div class="checker-card soon">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class B</span>
+                    <span class="card-status soon">Coming soon</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- House body -->
+                        <rect x="4" y="18" width="28" height="12" rx="1" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1.2"/>
+                        <!-- Main roof -->
+                        <path d="M3 19 L18 6 L33 19" stroke="#d1d5db" stroke-width="1.2" stroke-linejoin="round" fill="#f3f4f6"/>
+                        <!-- Dormer -->
+                        <rect x="13" y="9" width="10" height="7" rx="0.5" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="2 1.5"/>
+                        <path d="M12 10 L18 5 L24 10" stroke="#d1d5db" stroke-width="1.2" fill="#f9fafb"/>
+                        <!-- Door -->
+                        <rect x="12" y="22" width="5" height="8" rx="0.5" fill="#d1d5db"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Loft conversion</h2>
+                <p class="card-desc">Roof alterations, dormers, hip-to-gable conversions, and the addition of rooflights — cubic metre volume limits and ridge height rules.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class B</span>
+                </div>
             </div>
-            <ul class="outcome-bullets" id="outcomeBullets" style="display:none"></ul>
-            <button class="btn-restart" onclick="handleRestart()">↺ &nbsp;Start again</button>
         </div>
+
+        <!-- ── Outbuilding — COMING SOON ───────────────────────── -->
+        <div class="checker-card soon">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class E</span>
+                    <span class="card-status soon">Coming soon</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Main house (small) -->
+                        <rect x="2" y="16" width="18" height="14" rx="1" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1.2"/>
+                        <path d="M1 17 L11 8 L21 17" stroke="#d1d5db" stroke-width="1.2" fill="#f3f4f6"/>
+                        <!-- Outbuilding -->
+                        <rect x="26" y="20" width="16" height="10" rx="1" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="2.5 1.5"/>
+                        <path d="M25 21 L34 13 L43 21" stroke="#d1d5db" stroke-width="1.2" fill="#f9fafb"/>
+                        <!-- Ground line -->
+                        <line x1="1" y1="30" x2="43" y2="30" stroke="#e5e7eb" stroke-width="0.8"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Outbuilding</h2>
+                <p class="card-desc">Sheds, garages, greenhouses, home offices, swimming pools, and other ancillary structures within the curtilage of a dwellinghouse.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class E</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── Front extension / porch — COMING SOON ──────────── -->
+        <div class="checker-card soon">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class C / D</span>
+                    <span class="card-status soon">Coming soon</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- House body -->
+                        <rect x="8" y="14" width="28" height="16" rx="1" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1.2"/>
+                        <!-- Roof -->
+                        <path d="M7 15 L22 4 L37 15" stroke="#d1d5db" stroke-width="1.2" stroke-linejoin="round" fill="#f3f4f6"/>
+                        <!-- Porch extension (front) -->
+                        <rect x="16" y="20" width="12" height="10" rx="0.5" fill="#f9fafb" stroke="#d1d5db" stroke-width="1.2" stroke-dasharray="2 1.5"/>
+                        <!-- Porch canopy -->
+                        <path d="M14 21 L22 15 L30 21" stroke="#d1d5db" stroke-width="1.2" fill="#f9fafb"/>
+                        <!-- Door -->
+                        <rect x="19" y="23" width="6" height="7" rx="0.5" fill="#d1d5db"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Front extension / porch</h2>
+                <p class="card-desc">Alterations to the front elevation, addition of a porch, and extensions within 2m of a highway boundary.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class C / D</span>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Answer trail -->
-    <div class="trail-section" id="trailSection" style="display:none">
-        <div class="trail-header">Previous answers</div>
-        <div class="answer-trail" id="answerTrail"></div>
+    <!-- ── Guidance note ──────────────────────────────────────── -->
+    <div class="guidance-box">
+        <span class="guidance-icon" aria-hidden="true">ℹ</span>
+        <p class="guidance-text">
+            <strong>For guidance only.</strong> These assessments step through the permitted development criteria under the GPDO 2015 and provide an indicative outcome. They do not constitute formal planning advice or a determination by a Local Planning Authority. Where PD compliance is confirmed, a <strong>Lawful Development Certificate (LDC)</strong> is strongly recommended before commencing works.
+        </p>
     </div>
 
 </main>
 
-<script>
-'use strict';
-
-/* ── Decision tree data ──────────────────────────────────────────────── */
-
-const STEPS = {
-    s1: {
-        label: 'Property type',
-        question: 'Is the property an original dwellinghouse (not a flat, maisonette, or converted building)?',
-        ref: 'Class A applies to dwellinghouses only — GPDO 2015 Schedule 2, Part 1, Class A',
-        note: 'Flats and maisonettes are excluded from Class A PD rights. If converted from another use, check whether PD rights were removed at time of conversion.',
-        yes: 's2',
-        no: 'fail:dwellinghouse'
-    },
-    s2: {
-        label: 'Ownership / use',
-        question: 'Is the property in residential use (C3) and not used as an HMO (C4) or other sui generis use?',
-        ref: 'GPDO 2015 — Class A applies to use class C3 dwellinghouses',
-        note: 'If the property is currently an HMO or has lawfully changed use, PD rights under Class A do not apply.',
-        yes: 's3',
-        no: 'fail:dwellinghouse'
-    },
-    s3: {
-        label: 'Listed building',
-        question: 'Is the property a Listed Building?',
-        ref: 'GPDO 2015, Class A — listed buildings are excluded',
-        note: 'A listed building of any grade (I, II*, or II) cannot benefit from Class A PD. Listed Building Consent would be required in addition to any planning permission.',
-        yes: 'fail:listed',
-        no: 's4'
-    },
-    s4: {
-        label: 'Article 4 / conditions',
-        question: 'Has an Article 4 Direction been served on this property removing Class A PD rights, or does any existing planning permission carry a condition removing PD rights?',
-        ref: 'GPDO 2015 Article 4 — check with LPA and historic consents',
-        note: "Check the LPA's online GIS/mapping, the planning portal history, and any historic consents. Some conservation areas and new-build estates have Article 4 Directions removing PD.",
-        yes: 'fail:article4',
-        no: 's5'
-    },
-    s5: {
-        label: 'Designated area',
-        question: 'Is the property within a designated area — Conservation Area, AONB, National Park, or World Heritage Site?',
-        ref: 'Class A.1(b) — additional restrictions apply in designated areas',
-        note: 'If yes, stricter rules apply throughout the remaining checks. Side extensions, cladding changes, and certain rear extensions over one storey are not permitted in designated areas. This will be flagged at the end.',
-        yes: { next: 's6', flag: 'designated' },
-        no: 's6'
-    },
-    s6: {
-        label: 'Number of storeys',
-        question: 'Is this a single-storey rear extension (ground floor only, not exceeding the height of the original ground floor)?',
-        ref: 'Class A.1(d) — single-storey and two-storey have different depth limits',
-        note: 'Single-storey = one floor only. Two-storey extensions have much tighter PD limits and additional constraints.',
-        yes: 's7a',
-        no: 's7b'
-    },
-
-    /* ── Single storey branch ── */
-    s7a: {
-        label: 'Depth — single storey',
-        question: 'Does the extension project more than 4m from the rear wall of the original house (if detached), or more than 3m (if semi-detached or terraced)?',
-        ref: 'Class A.1(d)(i) — standard PD depth limit',
-        note: 'If within the 4m/3m limit, this is automatic PD (subject to remaining criteria). If it exceeds this but stays within 8m (detached) or 6m (other), Prior Approval may be possible via the Neighbour Consultation Scheme.',
-        yes: 's8a',
-        no: 's9'
-    },
-    s8a: {
-        label: 'Larger home extension',
-        question: 'Does the extension exceed 8m in depth (detached) or 6m in depth (semi-detached or terraced)?',
-        ref: 'Class A.1(da) — Neighbour Consultation Scheme maximum limits',
-        note: 'Extensions between 4–8m (detached) or 3–6m (other) require Prior Approval via the Neighbour Consultation Scheme — not automatic PD. Exceeding 8m/6m falls entirely outside PD.',
-        yes: 'fail:depth',
-        no: 'warn:priorapproval'
-    },
-    s9: {
-        label: 'Eaves height',
-        question: 'Will the eaves of the extension exceed 3m in height (relevant if within 2m of any boundary)?',
-        ref: 'Class A.1(c)(ii)',
-        note: 'The eaves height of a single-storey rear extension must not exceed 3m if any part of the extension is within 2m of a boundary.',
-        yes: 'fail:height',
-        no: 's10'
-    },
-    s10: {
-        label: 'Maximum height',
-        question: 'Will the extension exceed 4m in overall height (to the ridge or highest point)?',
-        ref: 'Class A.1(c)(iii)',
-        note: 'The maximum height of any single-storey rear extension is 4m regardless of boundary proximity.',
-        yes: 'fail:height',
-        no: 's11'
-    },
-
-    /* ── Two storey branch ── */
-    s7b: {
-        label: 'Depth — two storey',
-        question: 'Does the two-storey extension project more than 3m beyond the rear wall of the original house?',
-        ref: 'Class A.1(d)(ii) — two-storey rear extensions limited to 3m projection',
-        note: 'There is no larger home extension / Prior Approval route for two-storey extensions.',
-        yes: 'fail:2sdepth',
-        no: 's8b'
-    },
-    s8b: {
-        label: 'Boundary setback',
-        question: 'Would the extension be within 7m of the rear boundary?',
-        ref: 'Class A.1(d)(ii) — two-storey extensions must not be within 7m of the boundary opposite the rear wall',
-        note: 'Measure from the rear wall of the extension (at its furthest projection) to the rear boundary.',
-        yes: 'fail:boundary',
-        no: 's9b'
-    },
-    s9b: {
-        label: 'Eaves height',
-        question: 'Will the eaves height of the extension exceed the eaves height of the existing house?',
-        ref: 'Class A.1(c)(i)',
-        note: 'The eaves height of the extension must not exceed the eaves of the existing dwellinghouse.',
-        yes: 'fail:height',
-        no: 's10b'
-    },
-    s10b: {
-        label: 'Ridge height',
-        question: 'Will the ridge height of the extension exceed the ridge height of the existing house?',
-        ref: 'Class A.1(c)(i)',
-        note: 'The ridge (highest point of the roof) of the extension must not exceed that of the existing house.',
-        yes: 'fail:height',
-        no: 's11'
-    },
-
-    /* ── Common final steps ── */
-    s11: {
-        label: 'Materials',
-        question: 'Will the materials used in the extension be of similar appearance to those used on the existing house?',
-        ref: 'Class A.2(a) — materials must be of similar appearance',
-        note: 'This is a qualitative condition. Dissimilar materials (e.g. render on a predominantly brick house) may not comply. When in doubt, confirm via pre-application enquiry or seek an LDC.',
-        yes: 's12',
-        no: 'fail:materials'
-    },
-    s12: {
-        label: 'Curtilage coverage',
-        question: 'After this extension, will more than 50% of the total area of land around the original house be covered by buildings, extensions, or outbuildings?',
-        ref: 'Class A.1(b) — maximum 50% curtilage coverage',
-        note: 'Calculate the total footprint of all structures (excluding the original house) against the total curtilage area (excluding the original house footprint). Include any existing outbuildings, garages, and previous extensions.',
-        yes: 'fail:coverage',
-        no: 's13'
-    },
-    s13: {
-        label: 'Highway / principal elevation',
-        question: 'Does any part of the extension project forward of the principal elevation or a side elevation that fronts a highway?',
-        ref: 'Class A.1(a) — no extension forward of principal or highway-facing side elevation',
-        note: 'Common issue on corner plots or through-terraces. Even a small projection beyond the line of the principal or highway-facing elevation removes PD rights.',
-        yes: 'fail:highway',
-        no: 's14'
-    },
-    s14: {
-        label: 'Raised platforms / verandas',
-        question: 'Does the extension include a raised platform, veranda, or balcony?',
-        ref: 'Class A.1(i) — raised platforms and verandas are not permitted development',
-        note: 'Any raised platform, balcony, or veranda attached to the extension is excluded from PD. A ground-level patio or terrace is not affected by this restriction.',
-        yes: 'fail:veranda',
-        no: 'pass'
-    }
-};
-
-const OUTCOMES = {
-    'fail:dwellinghouse': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Property type not eligible for Class A PD',
-        body: 'Class A permitted development rights under the GPDO 2015 apply only to original dwellinghouses in residential use (C3). Flats, maisonettes, HMOs (C4), and buildings converted from another use are excluded. A full planning application will be required for any extension to this property.'
-    },
-    'fail:listed': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Listed Building — PD rights excluded',
-        body: 'A Listed Building of any grade (Grade I, II*, or II) cannot benefit from Class A permitted development rights. Both Listed Building Consent (LBC) and full planning permission will be required. Early pre-application engagement with the LPA\'s conservation officer is strongly recommended.'
-    },
-    'fail:article4': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'PD rights removed — Article 4 Direction or condition',
-        body: 'An Article 4 Direction or planning condition has removed Class A PD rights from this property. A full planning application will be required. Contact the LPA to confirm the precise extent of the Direction and whether any specific criteria may still allow the extension to be considered.'
-    },
-    'fail:depth': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Exceeds maximum permitted depth',
-        body: 'The extension exceeds the maximum permitted depth under both automatic PD (4m detached / 3m other) and the Neighbour Consultation Scheme (8m detached / 6m other). Extensions of this scale fall entirely outside Class A PD. A full planning application will be required.'
-    },
-    'fail:2sdepth': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Two-storey depth limit exceeded',
-        body: 'Two-storey rear extensions are limited to 3m projection beyond the rear wall of the original house under Class A.1(d)(ii). There is no Prior Approval / Neighbour Consultation Scheme route for two-storey extensions. A full planning application will be required.'
-    },
-    'fail:boundary': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Within 7m of rear boundary',
-        body: 'Two-storey rear extensions must not extend to within 7m of the boundary opposite the rear wall of the original house. The proposed extension does not meet this requirement. A full planning application will be required, or the design should be revised to comply with the 7m setback.'
-    },
-    'fail:height': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Height limit exceeded',
-        body: 'The proposed extension exceeds the height limits permitted under Class A. Single-storey extensions must not exceed 3m eaves height within 2m of a boundary, or 4m overall height. Two-storey extensions must not exceed the eaves or ridge height of the original house. A full planning application will be required, or the design should be revised to comply.'
-    },
-    'fail:materials': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Materials non-compliance',
-        body: 'Class A.2(a) requires that materials used in any extension must be of similar appearance to those used in the construction of the existing house. The proposed materials do not appear to meet this condition. A full planning application may be required, or the materials choice should be revised to achieve compliance. A pre-application enquiry with the LPA is recommended to confirm.'
-    },
-    'fail:coverage': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Curtilage coverage limit exceeded',
-        body: 'More than 50% of the total area of land around the original dwellinghouse would be covered by buildings, extensions, or outbuildings after the proposed extension. This exceeds the maximum curtilage coverage permitted under Class A.1(b). A full planning application will be required, or the scale of the extension or existing outbuildings should be reviewed.'
-    },
-    'fail:highway': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Projects forward of principal or highway-facing elevation',
-        body: 'No extension can project forward of the principal elevation or a side elevation that fronts a highway (Class A.1(a)). This is a common issue on corner plots and through-terraces. The design should be revised to ensure no part of the extension projects beyond these lines, or a full planning application will be required.'
-    },
-    'fail:veranda': {
-        type: 'fail',
-        badge: 'Not permitted development',
-        title: 'Raised platform or veranda included',
-        body: 'Raised platforms, verandas, and balconies are specifically excluded from Class A permitted development (Class A.1(i)). Any such element attached to the extension will require full planning permission. Ground-level patios and terraces are not subject to this restriction and may be permissible separately.'
-    },
-    'warn:priorapproval': {
-        type: 'warn',
-        badge: 'Prior Approval required',
-        title: 'Neighbour Consultation Scheme applies',
-        body: 'This extension exceeds the standard automatic PD depth limit (4m detached / 3m other) but falls within the larger home extension limits (8m detached / 6m other). A Prior Approval application must be submitted to the LPA under Class A.1(da). The LPA notifies adjoining owners; if no objection is received and the LPA raises no concerns within 42 days, Prior Approval is deemed granted. The LPA may only consider the impact on the amenity of adjoining properties — it cannot assess the full range of planning matters.'
-    },
-    'pass': {
-        type: 'pass',
-        badge: 'Likely permitted development',
-        title: '✓ This extension appears to comply with Class A PD',
-        body: 'Based on your answers, this rear extension appears to comply with Class A permitted development criteria under the GPDO 2015.'
-    }
-};
-
-const PASS_BULLETS = [
-    'Verify no further conditions are attached to historic planning permissions on this site',
-    'Check for any private covenants or restrictions in the title deeds',
-    'Consider Class A.2 conditions (no obstruction of neighbour\'s light, adequate drainage)',
-    'A Lawful Development Certificate (LDC) application is strongly recommended to formally confirm PD compliance before work commences'
-];
-
-const TOTAL_STEPS_ESTIMATE = 14;
-
-/* ── State ───────────────────────────────────────────────────────────── */
-
-let currentStepId = 's1';
-let history = [];   /* [{ stepId, answer, label }] */
-let flags = { designated: false };
-
-/* ── Helpers ─────────────────────────────────────────────────────────── */
-
-function recalcFlags(hist) {
-    const f = { designated: false };
-    hist.forEach(function(h) {
-        if (h.stepId === 's5' && h.answer === 'yes') f.designated = true;
-    });
-    return f;
-}
-
-function isOutcome(id) {
-    return id === 'pass' || id.startsWith('fail:') || id.startsWith('warn:');
-}
-
-/* ── Render question ─────────────────────────────────────────────────── */
-
-function render() {
-    var step = STEPS[currentStepId];
-    if (!step) return;
-
-    document.getElementById('sectionLabel').textContent = step.label;
-    document.getElementById('questionText').textContent = step.question;
-    document.getElementById('refText').textContent = step.ref;
-    document.getElementById('noteText').textContent = step.note;
-
-    var backBtn = document.getElementById('btnBack');
-    backBtn.style.display = history.length > 0 ? 'inline-flex' : 'none';
-
-    updateProgress();
-    renderTrail();
-}
-
-function updateProgress() {
-    var pct = Math.min(Math.round((history.length / TOTAL_STEPS_ESTIMATE) * 100), 95);
-    document.getElementById('progressFill').style.width = pct + '%';
-    document.getElementById('progressPct').textContent = pct + '%';
-    document.getElementById('stepCounter').textContent = 'Step ' + (history.length + 1);
-    document.getElementById('progressFill').setAttribute('aria-valuenow', pct);
-}
-
-/* ── Render answer trail ─────────────────────────────────────────────── */
-
-function renderTrail() {
-    var trailSection = document.getElementById('trailSection');
-    var trail = document.getElementById('answerTrail');
-
-    if (history.length === 0) {
-        trailSection.style.display = 'none';
-        return;
-    }
-
-    trailSection.style.display = 'block';
-    trail.innerHTML = history.map(function(h) {
-        return '<div class="trail-item">'
-            + '<span class="trail-label">' + escHtml(h.label) + '</span>'
-            + '<span class="trail-answer ' + h.answer + '">' + h.answer.toUpperCase() + '</span>'
-            + '</div>';
-    }).join('');
-}
-
-function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-/* ── Render outcome ──────────────────────────────────────────────────── */
-
-function renderOutcome(outcomeId) {
-    var outcome = OUTCOMES[outcomeId];
-    if (!outcome) return;
-
-    document.getElementById('questionArea').style.display = 'none';
-    document.getElementById('progressSection').style.display = 'none';
-
-    var oa = document.getElementById('outcomeArea');
-    oa.style.display = 'block';
-
-    var card = document.getElementById('outcomeCard');
-    card.className = 'outcome-card ' + outcome.type;
-
-    var badge = document.getElementById('outcomeBadge');
-    badge.className = 'outcome-badge ' + outcome.type;
-    badge.textContent = outcome.badge;
-
-    document.getElementById('outcomeTitle').textContent = outcome.title;
-    document.getElementById('outcomeBody').textContent = outcome.body;
-
-    /* Designated area callout (PASS only) */
-    var desCallout = document.getElementById('designatedCallout');
-    desCallout.style.display = (outcome.type === 'pass' && flags.designated) ? 'block' : 'none';
-
-    /* Bullets (PASS only) */
-    var bulletList = document.getElementById('outcomeBullets');
-    if (outcome.type === 'pass') {
-        bulletList.style.display = 'flex';
-        bulletList.innerHTML = PASS_BULLETS.map(function(b) {
-            return '<li><span class="bullet-dash">—</span>' + escHtml(b) + '</li>';
-        }).join('');
-    } else {
-        bulletList.style.display = 'none';
-    }
-
-    renderTrail();
-}
-
-/* ── Actions ─────────────────────────────────────────────────────────── */
-
-function handleAnswer(answer) {
-    var step = STEPS[currentStepId];
-    if (!step) return;
-
-    var route = step[answer];
-    var nextId, flagToSet;
-
-    if (typeof route === 'object' && route !== null) {
-        nextId = route.next;
-        flagToSet = route.flag;
-    } else {
-        nextId = route;
-    }
-
-    /* Record in history */
-    history.push({ stepId: currentStepId, answer: answer, label: step.label });
-
-    /* Apply flag */
-    if (flagToSet) {
-        flags[flagToSet] = true;
-    }
-
-    /* Animate out, then transition */
-    var card = document.getElementById('questionCard');
-    card.classList.add('slide-out');
-
-    setTimeout(function() {
-        card.classList.remove('slide-out');
-
-        if (isOutcome(nextId)) {
-            renderOutcome(nextId);
-        } else {
-            currentStepId = nextId;
-            card.classList.remove('slide-in');
-            void card.offsetWidth; /* force reflow */
-            card.classList.add('slide-in');
-            render();
-            setTimeout(function() { card.classList.remove('slide-in'); }, 280);
-        }
-    }, 170);
-}
-
-function handleBack() {
-    if (history.length === 0) return;
-
-    var last = history.pop();
-    currentStepId = last.stepId;
-    flags = recalcFlags(history);
-
-    var card = document.getElementById('questionCard');
-    card.classList.remove('slide-in');
-    void card.offsetWidth;
-    card.classList.add('slide-in');
-    render();
-    setTimeout(function() { card.classList.remove('slide-in'); }, 280);
-}
-
-function handleRestart() {
-    currentStepId = 's1';
-    history = [];
-    flags = { designated: false };
-
-    document.getElementById('questionArea').style.display = 'block';
-    document.getElementById('progressSection').style.display = 'block';
-    document.getElementById('outcomeArea').style.display = 'none';
-
-    var card = document.getElementById('questionCard');
-    card.classList.remove('slide-in');
-    void card.offsetWidth;
-    card.classList.add('slide-in');
-    render();
-    setTimeout(function() { card.classList.remove('slide-in'); }, 280);
-}
-
-/* ── Init ────────────────────────────────────────────────────────────── */
-render();
-</script>
 </body>
 </html>
