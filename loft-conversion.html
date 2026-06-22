@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rear Extension — PD Checker — Steve Hunt Partnership</title>
+    <title>Loft Conversion — PD Checker — Steve Hunt Partnership</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -529,18 +529,6 @@
             margin-bottom: 18px;
         }
 
-        .designated-callout {
-            background: var(--light-blue);
-            border: 0.5px solid rgba(47,84,150,0.2);
-            border-left: 3px solid var(--blue);
-            border-radius: 0 8px 8px 0;
-            padding: 12px 14px;
-            font-size: 13px;
-            color: var(--blue);
-            margin-bottom: 18px;
-            line-height: 1.55;
-        }
-
         .outcome-bullets {
             list-style: none;
             margin-bottom: 24px;
@@ -816,13 +804,6 @@
                 print-color-adjust: exact;
             }
 
-            .pv-outcome-chip.warn {
-                background: #FFF8E8 !important;
-                color: #8B5A00 !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
             .pv-outcome-chip.fail {
                 background: #FEF2EE !important;
                 color: #D85A30 !important;
@@ -842,17 +823,6 @@
                 font-size: 10pt;
                 color: #333;
                 line-height: 1.6;
-                margin-bottom: 8pt;
-            }
-
-            .pv-designated {
-                background: #EEF3FA !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-                border-left: 3pt solid #2F5496;
-                padding: 6pt 10pt;
-                font-size: 9pt;
-                color: #2F5496 !important;
                 margin-bottom: 8pt;
             }
 
@@ -916,9 +886,9 @@
 <!-- ── Tab bar ──────────────────────────────────────────────────── -->
 <nav class="tab-bar" role="tablist">
     <div class="tab-bar-inner">
-        <button class="tab active" role="tab" aria-selected="true">Rear extension</button>
+        <button class="tab link" role="tab" aria-selected="false" onclick="window.location='rear-extension.html'">Rear extension</button>
         <button class="tab disabled" role="tab" aria-selected="false" disabled>Side extension <span class="tab-soon">Soon</span></button>
-        <button class="tab link" role="tab" aria-selected="false" onclick="window.location='loft-conversion.html'">Loft conversion</button>
+        <button class="tab active" role="tab" aria-selected="true">Loft conversion</button>
         <button class="tab disabled" role="tab" aria-selected="false" disabled>Outbuilding <span class="tab-soon">Soon</span></button>
         <button class="tab disabled" role="tab" aria-selected="false" disabled>Front / porch <span class="tab-soon">Soon</span></button>
     </div>
@@ -962,9 +932,6 @@
             <div class="outcome-badge" id="outcomeBadge"></div>
             <h2 class="outcome-title" id="outcomeTitle"></h2>
             <p class="outcome-body" id="outcomeBody"></p>
-            <div id="designatedCallout" class="designated-callout" style="display:none">
-                <strong>Designated area note:</strong> The property is in a designated area — confirm the extension does not involve cladding or materials changes that would require a separate application.
-            </div>
             <ul class="outcome-bullets" id="outcomeBullets" style="display:none"></ul>
             <div class="outcome-actions">
                 <button class="btn-restart" onclick="handleRestart()">↺ &nbsp;Start again</button>
@@ -995,7 +962,7 @@
             </div>
         </div>
 
-        <div class="pv-type-bar">Rear Single-Storey / Two-Storey Extension — Schedule 2, Part 1, Class A</div>
+        <div class="pv-type-bar">Loft Conversion (Roof Alteration) — Schedule 2, Part 1, Class B</div>
 
         <div class="pv-disclaimer">
             <strong>Disclaimer:</strong> This assessment is provided for guidance purposes only and does not constitute planning advice.
@@ -1025,226 +992,167 @@
 const STEPS = {
     s1: {
         label: 'Property type',
-        question: 'Is the property an original dwellinghouse (not a flat, maisonette, or converted building)?',
-        ref: 'Class A applies to dwellinghouses only — GPDO 2015 Schedule 2, Part 1, Class A',
-        note: 'Flats and maisonettes are excluded from Class A PD rights. If converted from another use, check whether PD rights were removed at time of conversion.',
-        yes: 's2', no: 'fail:dwellinghouse'
+        question: 'Is the property a house (not a flat, maisonette, or other building)?',
+        ref: 'Class B applies to dwellinghouses only — GPDO 2015 Schedule 2, Part 1, Class B',
+        note: 'Permitted development allowances for loft conversions apply to houses only, not flats or maisonettes.',
+        yes: 's2', no: 'fail:notahouse'
     },
     s2: {
-        label: 'Ownership / use',
-        question: 'Is the property in residential use (C3) and not used as an HMO (C4) or other sui generis use?',
-        ref: 'GPDO 2015 — Class A applies to use class C3 dwellinghouses',
-        note: 'If the property is currently an HMO or has lawfully changed use, PD rights under Class A do not apply.',
-        yes: 's3', no: 'fail:dwellinghouse'
-    },
-    s3: {
         label: 'Listed building',
         question: 'Is the property a Listed Building?',
-        ref: 'GPDO 2015, Class A — listed buildings are excluded',
-        note: 'A listed building of any grade (I, II*, or II) cannot benefit from Class A PD. Listed Building Consent would be required in addition to any planning permission.',
-        yes: 'fail:listed', no: 's4'
+        ref: 'Class B — other consents required for listed buildings',
+        note: 'Listed buildings require Listed Building Consent in addition to any planning permission. Class B PD does not apply.',
+        yes: 'fail:listed', no: 's3'
+    },
+    s3: {
+        label: 'Article 4 / conditions',
+        question: 'Has an Article 4 Direction removed PD rights, or does a planning condition remove them?',
+        ref: 'GPDO 2015 Article 4 — check with LPA',
+        note: 'Check with the Local Planning Authority whether PD rights have been removed. New-build estates and some areas have Article 4 Directions.',
+        yes: 'fail:article4', no: 's4'
     },
     s4: {
-        label: 'Article 4 / conditions',
-        question: 'Has an Article 4 Direction been served on this property removing Class A PD rights, or does any existing planning permission carry a condition removing PD rights?',
-        ref: 'GPDO 2015 Article 4 — check with LPA and historic consents',
-        note: "Check the LPA's online GIS/mapping, the planning portal history, and any historic consents. Some conservation areas and new-build estates have Article 4 Directions removing PD.",
-        yes: 'fail:article4', no: 's5'
+        label: 'Designated land',
+        question: 'Is the property on designated land — a National Park, the Broads, an AONB, a Conservation Area, or a World Heritage Site?',
+        ref: 'Class B.1(a) — loft conversions are NOT permitted development on designated land',
+        note: 'This is an absolute exclusion for Class B. Unlike rear extensions, there is no restricted allowance — loft conversions on designated land always require a planning application.',
+        yes: 'fail:designated', no: 's5'
     },
     s5: {
-        label: 'Designated area',
-        question: 'Is the property within a designated area — Conservation Area, AONB, National Park, or World Heritage Site?',
-        ref: 'Class A.1(b) — additional restrictions apply in designated areas',
-        note: 'If yes, stricter rules apply throughout the remaining checks. Side extensions, cladding changes, and certain rear extensions over one storey are not permitted in designated areas. This will be flagged at the end.',
-        yes: { next: 's6', flag: 'designated' }, no: 's6'
+        label: 'Volume allowance',
+        question: 'Will the additional roof space created exceed 40 cubic metres (terraced house) or 50 cubic metres (detached or semi-detached)?',
+        ref: 'Class B.1(c) — volume limits, inclusive of previous roof additions',
+        note: 'Any previous roof space additions count toward this limit, even if made by a previous owner. Terraced: 40m³. Detached/semi-detached: 50m³.',
+        yes: 'fail:volume', no: 's6'
     },
     s6: {
-        label: 'Number of storeys',
-        question: 'Is this a single-storey rear extension (ground floor only, not exceeding the height of the original ground floor)?',
-        ref: 'Class A.1(d) — single-storey and two-storey have different depth limits',
-        note: 'Single-storey = one floor only. Two-storey extensions have much tighter PD limits and additional constraints.',
-        yes: 's7a', no: 's7b'
+        label: 'Principal elevation / highway',
+        question: 'Would the roof extension go beyond the plane of the existing roof slope on the principal elevation that fronts a highway?',
+        ref: 'Class B.1(b) — no extension beyond the roof plane of the principal elevation fronting a highway',
+        note: 'Front-facing roof extensions (e.g. a front dormer) on the elevation fronting a highway are not permitted development.',
+        yes: 'fail:frontroofplane', no: 's7'
     },
-    /* Single storey */
-    s7a: {
-        label: 'Depth — single storey',
-        question: 'Does the extension project more than 4m from the rear wall of the original house (if detached), or more than 3m (if semi-detached or terraced)?',
-        ref: 'Class A.1(d)(i) — standard PD depth limit',
-        note: 'If within the 4m/3m limit, this is automatic PD (subject to remaining criteria). If it exceeds this but stays within 8m (detached) or 6m (other), Prior Approval may be possible via the Neighbour Consultation Scheme.',
-        yes: 's8a', no: 's9'
+    s7: {
+        label: 'Height',
+        question: 'Would any part of the roof extension be higher than the highest part of the existing roof?',
+        ref: 'Class B.1(d)(i) — no part higher than the existing ridge',
+        note: 'The extension must not exceed the highest part of the existing roof (the ridge).',
+        yes: 'fail:height', no: 's8'
     },
-    s8a: {
-        label: 'Larger home extension',
-        question: 'Does the extension exceed 8m in depth (detached) or 6m in depth (semi-detached or terraced)?',
-        ref: 'Class A.1(da) — Neighbour Consultation Scheme maximum limits',
-        note: 'Extensions between 4–8m (detached) or 3–6m (other) require Prior Approval via the Neighbour Consultation Scheme — not automatic PD. Exceeding 8m/6m falls entirely outside PD.',
-        yes: 'fail:depth', no: 'warn:priorapproval'
+    s8: {
+        label: 'Eaves set-back',
+        question: 'Is the roof extension a hip-to-gable conversion?',
+        ref: 'Class B.2(b) — set-back condition, hip-to-gable exempt',
+        note: 'All roof extensions except hip-to-gable must be set back at least 20cm from the original eaves, measured along the roof plane. Answer YES if it is a hip-to-gable (which is exempt from the set-back rule).',
+        yes: 's10', no: 's9'
     },
     s9: {
-        label: 'Eaves height',
-        question: 'Will the eaves of the extension exceed 3m in height (relevant if within 2m of any boundary)?',
-        ref: 'Class A.1(c)(ii)',
-        note: 'The eaves height of a single-storey rear extension must not exceed 3m if any part of the extension is within 2m of a boundary.',
-        yes: 'fail:height', no: 's10'
+        label: 'Eaves set-back distance',
+        question: 'Will the roof extension be set back at least 20cm from the original eaves, measured along the roof plane?',
+        ref: 'Class B.2(b) — minimum 20cm set-back from original eaves',
+        note: 'The 20cm distance is measured along the roof plane, not vertically or horizontally.',
+        yes: 's10', no: 'fail:setback'
     },
     s10: {
-        label: 'Maximum height',
-        question: 'Will the extension exceed 4m in overall height (to the ridge or highest point)?',
-        ref: 'Class A.1(c)(iii)',
-        note: 'The maximum height of any single-storey rear extension is 4m regardless of boundary proximity.',
-        yes: 'fail:height', no: 's11'
+        label: 'Side-facing windows',
+        question: 'Will any side-facing windows be either obscure-glazed and non-opening, OR have any opening parts more than 1.7m above the floor of the room?',
+        ref: 'Class B.2(c) — side window obscure-glazing condition',
+        note: 'Side-facing windows must be obscure-glazed AND either non-opening or with openable sections only above 1.7m from the floor. Answer YES if this condition is met (or if there are no side-facing windows).',
+        yes: 's11', no: 'fail:sidewindow'
     },
-    /* Two storey */
-    s7b: {
-        label: 'Depth — two storey',
-        question: 'Does the two-storey extension project more than 3m beyond the rear wall of the original house?',
-        ref: 'Class A.1(d)(ii) — two-storey rear extensions limited to 3m projection',
-        note: 'There is no larger home extension / Prior Approval route for two-storey extensions.',
-        yes: 'fail:2sdepth', no: 's8b'
-    },
-    s8b: {
-        label: 'Boundary setback',
-        question: 'Would the extension be within 7m of the rear boundary?',
-        ref: 'Class A.1(d)(ii) — two-storey extensions must not be within 7m of the boundary opposite the rear wall',
-        note: 'Measure from the rear wall of the extension (at its furthest projection) to the rear boundary.',
-        yes: 'fail:boundary', no: 's9b'
-    },
-    s9b: {
-        label: 'Eaves height',
-        question: 'Will the eaves height of the extension exceed the eaves height of the existing house?',
-        ref: 'Class A.1(c)(i)',
-        note: 'The eaves height of the extension must not exceed the eaves of the existing dwellinghouse.',
-        yes: 'fail:height', no: 's10b'
-    },
-    s10b: {
-        label: 'Ridge height',
-        question: 'Will the ridge height of the extension exceed the ridge height of the existing house?',
-        ref: 'Class A.1(c)(i)',
-        note: 'The ridge (highest point of the roof) of the extension must not exceed that of the existing house.',
-        yes: 'fail:height', no: 's11'
-    },
-    /* Common final steps */
     s11: {
         label: 'Materials',
-        question: 'Will the materials used in the extension be of similar appearance to those used on the existing house?',
-        ref: 'Class A.2(a) — materials must be of similar appearance',
-        note: 'This is a qualitative condition. Dissimilar materials (e.g. render on a predominantly brick house) may not comply. When in doubt, confirm via pre-application enquiry or seek an LDC.',
+        question: 'Will the materials be of similar appearance to the existing house?',
+        ref: 'Class B.2(a) — materials of similar appearance',
+        note: 'The roof extension materials must be similar in appearance to the existing house.',
         yes: 's12', no: 'fail:materials'
     },
     s12: {
-        label: 'Curtilage coverage',
-        question: 'After this extension, will more than 50% of the total area of land around the original house be covered by buildings, extensions, or outbuildings?',
-        ref: 'Class A.1(b) — maximum 50% curtilage coverage',
-        note: 'Calculate the total footprint of all structures (excluding the original house) against the total curtilage area (excluding the original house footprint). Include any existing outbuildings, garages, and previous extensions.',
-        yes: 'fail:coverage', no: 's13'
-    },
-    s13: {
-        label: 'Highway / principal elevation',
-        question: 'Does any part of the extension project forward of the principal elevation or a side elevation that fronts a highway?',
-        ref: 'Class A.1(a) — no extension forward of principal or highway-facing side elevation',
-        note: 'Common issue on corner plots or through-terraces. Even a small projection beyond the line of the principal or highway-facing elevation removes PD rights.',
-        yes: 'fail:highway', no: 's14'
-    },
-    s14: {
-        label: 'Raised platforms / verandas',
-        question: 'Does the extension include a raised platform, veranda, or balcony?',
-        ref: 'Class A.1(i) — raised platforms and verandas are not permitted development',
-        note: 'Any raised platform, balcony, or veranda attached to the extension is excluded from PD. A ground-level patio or terrace is not affected by this restriction.',
+        label: 'Verandas / balconies / raised platforms',
+        question: 'Does the conversion include a veranda, balcony, or raised platform?',
+        ref: 'Class B.1(e) — verandas, balconies and raised platforms excluded',
+        note: 'Roof terraces, balconies, and raised platforms are not permitted development under Class B. Rooflights/skylights that sit within the roof plane are fine.',
         yes: 'fail:veranda', no: 'pass'
     }
 };
 
 const OUTCOMES = {
-    'fail:dwellinghouse': {
+    'fail:notahouse': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'Property type not eligible for Class A PD',
-        body: 'Class A permitted development rights under the GPDO 2015 apply only to original dwellinghouses in residential use (C3). Flats, maisonettes, HMOs (C4), and buildings converted from another use are excluded. A full planning application will be required for any extension to this property.'
+        title: '✗ Not permitted development — property not a dwellinghouse',
+        body: 'Class B permitted development rights apply to dwellinghouses (houses) only. Flats, maisonettes, and other buildings are excluded from Class B PD. A full planning application will be required for any roof alteration or loft conversion to this property.'
     },
     'fail:listed': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'Listed Building — PD rights excluded',
-        body: "A Listed Building of any grade (Grade I, II*, or II) cannot benefit from Class A permitted development rights. Both Listed Building Consent (LBC) and full planning permission will be required. Early pre-application engagement with the LPA's conservation officer is strongly recommended."
+        title: '✗ Not permitted development — Listed Building',
+        body: "A Listed Building cannot benefit from Class B permitted development rights. Both Listed Building Consent and full planning permission will be required. Early pre-application engagement with the LPA's conservation officer is strongly recommended."
     },
     'fail:article4': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'PD rights removed — Article 4 Direction or condition',
-        body: 'An Article 4 Direction or planning condition has removed Class A PD rights from this property. A full planning application will be required. Contact the LPA to confirm the precise extent of the Direction and whether any specific criteria may still allow the extension to be considered.'
+        title: '✗ Not permitted development — PD rights removed',
+        body: 'An Article 4 Direction or planning condition has removed Class B PD rights from this property. A full planning application will be required. Contact the LPA to confirm the precise extent of the Direction and whether any specific criteria may still allow the works to be considered.'
     },
-    'fail:depth': {
+    'fail:designated': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'Exceeds maximum permitted depth',
-        body: 'The extension exceeds the maximum permitted depth under both automatic PD (4m detached / 3m other) and the Neighbour Consultation Scheme (8m detached / 6m other). Extensions of this scale fall entirely outside Class A PD. A full planning application will be required.'
+        title: '✗ Not permitted development — designated land',
+        body: 'Loft conversions on designated land (National Parks, the Broads, AONBs, Conservation Areas, and World Heritage Sites) are not permitted development under Class B. Unlike rear extensions, there is no restricted allowance — this is an absolute exclusion. A full planning application will be required.'
     },
-    'fail:2sdepth': {
+    'fail:volume': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'Two-storey depth limit exceeded',
-        body: 'Two-storey rear extensions are limited to 3m projection beyond the rear wall of the original house under Class A.1(d)(ii). There is no Prior Approval / Neighbour Consultation Scheme route for two-storey extensions. A full planning application will be required.'
+        title: '✗ Not permitted development — volume limit exceeded',
+        body: 'The additional roof space created would exceed the Class B volume limit: 40m³ for a terraced house, or 50m³ for a detached or semi-detached house. Previous roof space additions by any owner count toward this total. A full planning application will be required, or the design should be revised to comply with the volume limit.'
     },
-    'fail:boundary': {
+    'fail:frontroofplane': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'Within 7m of rear boundary',
-        body: 'Two-storey rear extensions must not extend to within 7m of the boundary opposite the rear wall of the original house. The proposed extension does not meet this requirement. A full planning application will be required, or the design should be revised to comply with the 7m setback.'
+        title: '✗ Not permitted development — extends beyond front roof plane',
+        body: 'The roof extension would go beyond the plane of the existing roof slope on the principal elevation that fronts a highway. Front-facing dormers on the highway elevation are not permitted development under Class B. A full planning application will be required, or the design should be revised so the front roof slope is unaltered.'
     },
     'fail:height': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'Height limit exceeded',
-        body: 'The proposed extension exceeds the height limits permitted under Class A. Single-storey extensions must not exceed 3m eaves height within 2m of a boundary, or 4m overall height. Two-storey extensions must not exceed the eaves or ridge height of the original house. A full planning application will be required, or the design should be revised to comply.'
+        title: '✗ Not permitted development — height exceeds existing ridge',
+        body: 'No part of a Class B roof extension may be higher than the highest part of the existing roof (the ridge). The proposed extension exceeds this limit. A full planning application will be required, or the design should be revised so that no part exceeds the existing ridge height.'
+    },
+    'fail:setback': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — 20cm eaves set-back not met',
+        body: 'Roof extensions (other than hip-to-gable conversions) must be set back at least 20cm from the original eaves, measured along the roof plane. The proposed extension does not meet this requirement. A full planning application will be required, or the design should be revised to achieve the 20cm set-back.'
+    },
+    'fail:sidewindow': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — side window condition not met',
+        body: 'Any side-facing windows in a Class B roof extension must be obscure-glazed and either non-opening, or with openable parts only above 1.7m from the floor. The proposed windows do not meet this condition. A full planning application will be required, or the design should be revised to use compliant side windows.'
     },
     'fail:materials': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'Materials non-compliance',
-        body: 'Class A.2(a) requires that materials used in any extension must be of similar appearance to those used in the construction of the existing house. The proposed materials do not appear to meet this condition. A full planning application may be required, or the materials choice should be revised. A pre-application enquiry with the LPA is recommended.'
-    },
-    'fail:coverage': {
-        type: 'fail', badge: 'Not permitted development',
-        title: 'Curtilage coverage limit exceeded',
-        body: 'More than 50% of the total area of land around the original dwellinghouse would be covered by buildings, extensions, or outbuildings after the proposed extension. This exceeds the maximum curtilage coverage permitted under Class A.1(b). A full planning application will be required, or the scale of the extension or existing outbuildings should be reviewed.'
-    },
-    'fail:highway': {
-        type: 'fail', badge: 'Not permitted development',
-        title: 'Projects forward of principal or highway-facing elevation',
-        body: 'No extension can project forward of the principal elevation or a side elevation that fronts a highway (Class A.1(a)). This is a common issue on corner plots and through-terraces. The design should be revised so no part of the extension projects beyond these lines, or a full planning application will be required.'
+        title: '✗ Not permitted development — materials non-compliance',
+        body: 'Class B.2(a) requires that materials used in the roof extension are of similar appearance to those used on the existing house. The proposed materials do not appear to meet this condition. A full planning application may be required, or the materials choice should be revised. A pre-application enquiry with the LPA is recommended.'
     },
     'fail:veranda': {
         type: 'fail', badge: 'Not permitted development',
-        title: 'Raised platform or veranda included',
-        body: 'Raised platforms, verandas, and balconies are specifically excluded from Class A permitted development (Class A.1(i)). Any such element attached to the extension will require full planning permission. Ground-level patios and terraces are not subject to this restriction and may be permissible separately.'
-    },
-    'warn:priorapproval': {
-        type: 'warn', badge: 'Prior Approval required',
-        title: 'Neighbour Consultation Scheme applies',
-        body: 'This extension exceeds the standard automatic PD depth limit (4m detached / 3m other) but falls within the larger home extension limits (8m detached / 6m other). A Prior Approval application must be submitted to the LPA under Class A.1(da). The LPA notifies adjoining owners; if no objection is received and the LPA raises no concerns within 42 days, Prior Approval is deemed granted. The LPA may only consider the impact on the amenity of adjoining properties — it cannot assess the full range of planning matters.'
+        title: '✗ Not permitted development — veranda, balcony, or raised platform',
+        body: 'Verandas, balconies, and raised platforms are specifically excluded from Class B permitted development under Class B.1(e). Any such element will require full planning permission. Rooflights and skylights that sit within the roof plane are unaffected by this restriction.'
     },
     'pass': {
         type: 'pass', badge: 'Likely permitted development',
-        title: '✓ This extension appears to comply with Class A PD',
-        body: 'Based on your answers, this rear extension appears to comply with Class A permitted development criteria under the GPDO 2015.'
+        title: '✓ Likely permitted development',
+        body: 'Based on your answers, this loft conversion appears to comply with Class B permitted development criteria under the GPDO 2015.'
     }
 };
 
 const PASS_BULLETS = [
-    'Verify no further conditions are attached to historic planning permissions on this site',
-    'Check for any private covenants or restrictions in the title deeds',
-    'Consider Class A.2 conditions (no obstruction of neighbour\'s light, adequate drainage)',
-    'A Lawful Development Certificate (LDC) application is strongly recommended to formally confirm PD compliance before work commences'
+    'A Lawful Development Certificate (LDC) is strongly recommended to formally confirm PD compliance before work begins',
+    'Building Regulations approval will still be required for a loft conversion regardless of planning status',
+    'Protected species: work on a loft or roof may affect bats. Consider whether a bat survey is needed — if bats are present, a licence may be required (contact Natural England)',
+    'Check for any private covenants or title restrictions'
 ];
 
-const TOTAL_STEPS_ESTIMATE = 14;
+const TOTAL_STEPS_ESTIMATE = 12;
 
 /* ── State ───────────────────────────────────────────────────────── */
 let currentStepId = 's1';
 let history = [];
-let flags = { designated: false };
 
 /* ── Helpers ─────────────────────────────────────────────────────── */
-function recalcFlags(hist) {
-    const f = { designated: false };
-    hist.forEach(function(h) {
-        if (h.stepId === 's5' && h.answer === 'yes') f.designated = true;
-    });
-    return f;
-}
-
 function isOutcome(id) {
     return id === 'pass' || id.startsWith('fail:') || id.startsWith('warn:');
 }
@@ -1306,9 +1214,6 @@ function renderOutcome(outcomeId) {
     document.getElementById('outcomeTitle').textContent = outcome.title;
     document.getElementById('outcomeBody').textContent = outcome.body;
 
-    const desCallout = document.getElementById('designatedCallout');
-    desCallout.style.display = (outcome.type === 'pass' && flags.designated) ? 'block' : 'none';
-
     const bulletList = document.getElementById('outcomeBullets');
     if (outcome.type === 'pass') {
         bulletList.style.display = 'flex';
@@ -1353,10 +1258,6 @@ function populatePrintView(outcomeId) {
         + '<h3 class="pv-outcome-title">' + escHtml(outcome.title) + '</h3>'
         + '<p class="pv-outcome-body">' + escHtml(outcome.body) + '</p>';
 
-    if (outcome.type === 'pass' && flags.designated) {
-        oHtml += '<div class="pv-designated"><strong>Designated area note:</strong> The property is in a designated area — confirm the extension does not involve cladding or materials changes that would require a separate application.</div>';
-    }
-
     if (outcome.type === 'pass') {
         oHtml += '<p class="pv-bullets-title">Recommended next steps:</p>'
             + '<ul class="pv-bullets">'
@@ -1376,17 +1277,9 @@ function handleAnswer(answer) {
     const step = STEPS[currentStepId];
     if (!step) return;
 
-    const route = step[answer];
-    let nextId, flagToSet;
-    if (typeof route === 'object' && route !== null) {
-        nextId = route.next;
-        flagToSet = route.flag;
-    } else {
-        nextId = route;
-    }
+    const nextId = step[answer];
 
     history.push({ stepId: currentStepId, answer: answer, label: step.label });
-    if (flagToSet) flags[flagToSet] = true;
 
     const card = document.getElementById('questionCard');
     card.classList.add('slide-out');
@@ -1410,7 +1303,6 @@ function handleBack() {
     if (history.length === 0) return;
     const last = history.pop();
     currentStepId = last.stepId;
-    flags = recalcFlags(history);
 
     const card = document.getElementById('questionCard');
     card.classList.remove('slide-in');
@@ -1423,7 +1315,6 @@ function handleBack() {
 function handleRestart() {
     currentStepId = 's1';
     history = [];
-    flags = { designated: false };
 
     document.getElementById('questionArea').style.display = 'block';
     document.getElementById('progressSection').style.display = 'block';
