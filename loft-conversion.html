@@ -366,6 +366,14 @@
             line-height: 1.58;
         }
 
+        /* diagram */
+        .diagram-wrap { margin-bottom: 22px; }
+        .diagram-figure { background: var(--white, #fff); border: 0.5px solid var(--border, #cdd6e6); border-radius: 8px; padding: 14px 16px; display: flex; justify-content: center; }
+        .diagram-figure svg { max-width: 100%; height: auto; }
+        .diagram-secondary-label { margin-top: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 7px; color: #8b5a00; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+        .diagram-secondary-icon { font-size: 12px; }
+        .diagram-secondary { margin-top: 0; }
+
         /* buttons */
         .button-group {
             display: flex;
@@ -918,6 +926,16 @@
                 <span class="note-icon" aria-hidden="true">ℹ</span>
                 <p class="note-text" id="noteText"></p>
             </div>
+            <div class="diagram-wrap" id="diagramWrap" style="display:none">
+                <div class="diagram-figure" id="diagramFigure"></div>
+                <div id="diagramSecondaryWrap" style="display:none">
+                    <div class="diagram-secondary-label">
+                        <span class="diagram-secondary-icon" aria-hidden="true">⚠</span>
+                        Common point — worth checking
+                    </div>
+                    <div class="diagram-figure diagram-secondary" id="diagramSecondaryFigure"></div>
+                </div>
+            </div>
             <div class="button-group">
                 <button class="btn-back" id="btnBack" onclick="handleBack()" style="display:none">← Back</button>
                 <button class="btn-yes" onclick="handleAnswer('yes')">YES</button>
@@ -989,6 +1007,15 @@
 
 /* ── Decision tree ───────────────────────────────────────────────── */
 
+const LOFT_DIAGRAMS = {
+  "volume": `<svg viewBox="0 0 560 410" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif;"><defs><pattern id="vf2_add" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#EEF3FA"/><line x1="0" y1="0" x2="0" y2="8" stroke="#2F5496" stroke-width="1.2" opacity="0.5"/></pattern></defs><text x="28" y="30" font-size="15.5" font-weight="600" fill="#2E4D8A">Volume allowance</text><text x="28" y="49" font-size="12" fill="#5a6b8c">The added volume is only the part projecting beyond the original roof slope.</text><line x1="40" y1="300" x2="520" y2="300" stroke="#3a4a66" stroke-width="2"/><text x="44" y="318" font-size="10" fill="#9aa7c0">ground level</text><rect x="110" y="200" width="210" height="100" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><path d="M102,200 L215,116 L328,200 Z" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><text x="215" y="256" font-size="12" font-weight="600" fill="#2E4D8A" text-anchor="middle">House</text><text x="215" y="180" font-size="9" fill="#7d93b8" text-anchor="middle">original roof</text><text x="215" y="191" font-size="9" fill="#7d93b8" text-anchor="middle">(not counted)</text><path d="M250,141 L300,178 L300,141 Z" fill="url(#vf2_add)" stroke="#2F5496" stroke-width="1.8"/><text x="365" y="135" font-size="10.5" font-weight="600" fill="#2F5496">dormer =</text><text x="365" y="149" font-size="10.5" font-weight="600" fill="#2F5496">added volume</text><line x1="302" y1="150" x2="358" y2="143" stroke="#2F5496" stroke-width="0.9" opacity="0.6"/><rect x="360" y="170" width="172" height="90" rx="8" fill="#ffffff" stroke="#cdd6e6" stroke-width="1.2"/><text x="376" y="192" font-size="11" font-weight="700" fill="#2E4D8A">Maximum added volume</text><line x1="376" y1="200" x2="516" y2="200" stroke="#e2e8f2" stroke-width="1"/><circle cx="382" cy="216" r="3.5" fill="#2F5496"/><text x="394" y="220" font-size="11" fill="#3a4a66">Terraced: <tspan font-weight="700" fill="#2E4D8A">40m³</tspan></text><circle cx="382" cy="238" r="3.5" fill="#2F5496"/><text x="394" y="242" font-size="11" fill="#3a4a66">Detached / semi: <tspan font-weight="700" fill="#2E4D8A">50m³</tspan></text><rect x="28" y="330" width="504" height="68" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="46" y="352" font-size="12" font-weight="700" fill="#633806">Count previous additions</text><text x="46" y="372" font-size="11.5" fill="#633806">Only the new roof space projecting beyond the original slope counts. Any earlier roof</text><text x="46" y="389" font-size="11.5" fill="#633806">additions (even by a previous owner) must be added to the total — check the history.</text></svg>`,
+  "hip_to_gable": `<svg viewBox="0 0 560 366" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif;"><defs><pattern id="hg2g_add" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#EEF3FA"/><line x1="0" y1="0" x2="0" y2="7" stroke="#2F5496" stroke-width="1.2" opacity="0.6"/></pattern></defs><text x="28" y="30" font-size="15.5" font-weight="600" fill="#2E4D8A">Hip-to-gable: the infill counts as volume</text><text x="28" y="49" font-size="12" fill="#5a6b8c">Squaring off the hipped end to a gable adds the shaded triangle of roof space.</text><text x="115" y="78" font-size="11" font-weight="700" fill="#5a6b8c" text-anchor="middle">Before — hip end</text><path d="M110,90 L175,90 L175,300 L55,300 L55,155 Z" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><line x1="55" y1="155" x2="175" y2="155" stroke="#2E4D8A" stroke-width="1.2"/><text x="285" y="78" font-size="11" font-weight="700" fill="#2F5496" text-anchor="middle">After — gable end</text><rect x="225" y="90" width="120" height="210" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><line x1="225" y1="155" x2="345" y2="155" stroke="#2E4D8A" stroke-width="1.2"/><path d="M225,90 L280,90 L225,155 Z" fill="url(#hg2g_add)" stroke="#2F5496" stroke-width="1.6"/><text x="244" y="107" font-size="8.5" font-weight="700" fill="#2F5496" text-anchor="middle">added</text><rect x="372" y="120" width="164" height="92" rx="8" fill="#ffffff" stroke="#cdd6e6" stroke-width="1.2"/><text x="388" y="142" font-size="11" font-weight="700" fill="#2E4D8A">Maximum added volume</text><line x1="388" y1="150" x2="520" y2="150" stroke="#e2e8f2" stroke-width="1"/><circle cx="394" cy="166" r="3.5" fill="#2F5496"/><text x="406" y="170" font-size="11" fill="#3a4a66">Terraced: <tspan font-weight="700" fill="#2E4D8A">40m³</tspan></text><circle cx="394" cy="188" r="3.5" fill="#2F5496"/><text x="406" y="192" font-size="11" fill="#3a4a66">Detached / semi: <tspan font-weight="700" fill="#2E4D8A">50m³</tspan></text><rect x="28" y="318" width="504" height="44" rx="6" fill="#ffffff" stroke="#cdd6e6" stroke-width="1"/><text x="46" y="337" font-size="11" fill="#3a4a66">The shaded triangle is new roof space and <tspan font-weight="700" fill="#2E4D8A">counts toward the volume</tspan></text><text x="46" y="353" font-size="11" fill="#3a4a66"><tspan font-weight="700" fill="#2E4D8A">limit</tspan> — including any earlier additions made by a previous owner.</text></svg>`,
+  "front_slope": `<svg viewBox="0 0 560 392" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif;"><defs><pattern id="fs2_ok" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#EEF3FA"/><line x1="0" y1="0" x2="0" y2="7" stroke="#2F5496" stroke-width="1.2" opacity="0.55"/></pattern><pattern id="fs2_bad" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#FCEBEB"/><line x1="0" y1="0" x2="0" y2="7" stroke="#D85A30" stroke-width="1.3" opacity="0.65"/></pattern></defs><text x="28" y="30" font-size="15.5" font-weight="600" fill="#2E4D8A">Front slope facing a highway</text><text x="28" y="49" font-size="12" fill="#5a6b8c">A dormer on the front roof slope facing a highway is not permitted development.</text><line x1="30" y1="302" x2="530" y2="302" stroke="#3a4a66" stroke-width="2"/><rect x="30" y="304" width="118" height="22" fill="#e8ebf1"/><text x="89" y="319" font-size="10" font-weight="600" fill="#7a8398" text-anchor="middle">HIGHWAY</text><rect x="158" y="205" width="204" height="97" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><path d="M148,205 L260,122 L372,205 Z" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><circle cx="135" cy="118" r="11" fill="#FCEBEB" stroke="#D85A30" stroke-width="1.3"/><path d="M130,113 l10,10 M140,113 l-10,10" stroke="#c0461f" stroke-width="2" stroke-linecap="round"/><circle cx="385" cy="118" r="11" fill="#EAF3DE" stroke="#639922" stroke-width="1.3"/><path d="M380,118 l4,4 l7,-8" fill="none" stroke="#4e7d18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="112" y="150" font-size="10.5" fill="#c0461f" font-weight="600" text-anchor="middle">front slope</text><text x="112" y="164" font-size="9.5" fill="#c0461f" text-anchor="middle">(faces highway)</text><text x="412" y="156" font-size="10.5" fill="#2F5496" font-weight="600" text-anchor="middle">rear slope</text><path d="M178,183 L236,140 L178,140 Z" fill="url(#fs2_bad)" stroke="#D85A30" stroke-width="1.7"/><path d="M284,140 L342,183 L342,140 Z" fill="url(#fs2_ok)" stroke="#2F5496" stroke-width="1.7"/><rect x="28" y="340" width="504" height="44" rx="6" fill="#ffffff" stroke="#cdd6e6" stroke-width="1"/><text x="46" y="359" font-size="11" fill="#3a4a66">A dormer breaking the front roof slope that <tspan font-weight="700" fill="#2E4D8A">faces a highway</tspan> is not permitted</text><text x="46" y="375" font-size="11" fill="#3a4a66">development. Dormers on the rear or side slopes are acceptable.</text></svg>`,
+  "height_ridge": `<svg viewBox="0 0 560 392" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif;"><defs><pattern id="dbr6_ok" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#EEF3FA"/><line x1="0" y1="0" x2="0" y2="7" stroke="#2F5496" stroke-width="1.2" opacity="0.55"/></pattern></defs><text x="28" y="30" font-size="15.5" font-weight="600" fill="#2E4D8A">Dormer set below the ridge</text><text x="28" y="49" font-size="12" fill="#5a6b8c">No part of the roof extension may be higher than the existing ridge.</text><line x1="30" y1="302" x2="530" y2="302" stroke="#3a4a66" stroke-width="2"/><rect x="158" y="205" width="204" height="97" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><path d="M148,205 L260,122 L372,205 Z" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><circle cx="260" cy="122" r="3" fill="#2E4D8A"/><line x1="218" y1="122" x2="302" y2="122" stroke="#2E4D8A" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.7"/><text x="308" y="125" font-size="9.5" fill="#7d93b8" text-anchor="start">existing ridge</text><path d="M284,140 L342,183 L342,140 Z" fill="url(#dbr6_ok)" stroke="#2F5496" stroke-width="1.7"/><circle cx="284" cy="140" r="3" fill="#2F5496"/><line x1="284" y1="140" x2="368" y2="140" stroke="#2F5496" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.7"/><text x="374" y="143" font-size="9.5" fill="#7d93b8" text-anchor="start">dormer ridge</text><rect x="28" y="340" width="504" height="44" rx="6" fill="#ffffff" stroke="#cdd6e6" stroke-width="1"/><text x="46" y="359" font-size="11" fill="#3a4a66">The dormer sits wholly below the existing ridge line — <tspan font-weight="700" fill="#2E4D8A">no part projects above the</tspan></text><text x="46" y="375" font-size="11" fill="#3a4a66"><tspan font-weight="700" fill="#2E4D8A">highest point</tspan> of the original roof.</text></svg>`,
+  "eaves_setback": `<svg viewBox="0 0 560 372" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif;"><defs><pattern id="es5_ok" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="7" fill="#EEF3FA"/><line x1="0" y1="0" x2="0" y2="7" stroke="#2F5496" stroke-width="1.2" opacity="0.55"/></pattern><marker id="es5_ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7" fill="none" stroke="#2E4D8A" stroke-width="1.5"/></marker><marker id="es5_arS" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M7,1 L1,4 L7,7" fill="none" stroke="#2E4D8A" stroke-width="1.5"/></marker></defs><text x="28" y="30" font-size="15.5" font-weight="600" fill="#2E4D8A">20cm eaves set-back</text><text x="28" y="49" font-size="12" fill="#5a6b8c">The dormer is set back at least 0.2m from the eaves, measured along the roof slope.</text><line x1="30" y1="302" x2="530" y2="302" stroke="#3a4a66" stroke-width="2"/><rect x="172" y="205" width="176" height="97" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><path d="M150,205 L260,122 L370,205 Z" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><circle cx="370" cy="205" r="3" fill="#2E4D8A"/><text x="376" y="208" font-size="9.5" fill="#7d93b8" text-anchor="start">eaves</text><path d="M284,140 L342,183 L342,140 Z" fill="url(#es5_ok)" stroke="#2F5496" stroke-width="1.7"/><line x1="342" y1="183" x2="356" y2="166" stroke="#2F5496" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.7"/><line x1="370" y1="205" x2="384" y2="188" stroke="#2F5496" stroke-width="0.9" stroke-dasharray="3 2" opacity="0.7"/><line x1="358.5" y1="168" x2="381.5" y2="186" stroke="#2E4D8A" stroke-width="1.5" marker-start="url(#es5_arS)" marker-end="url(#es5_ar)"/><text x="398" y="170" font-size="10.5" font-weight="700" fill="#2E4D8A" text-anchor="start">≥ 0.2m set-back</text><rect x="28" y="330" width="504" height="34" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="46" y="351" font-size="11" fill="#633806">Measured along the roof slope. <tspan font-weight="700">Exception:</tspan> hip-to-gable conversions are exempt from the set-back.</text></svg>`,
+  "side_windows": `<svg viewBox="0 0 560 384" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;height:auto;font-family:'Segoe UI',system-ui,sans-serif;"><defs><pattern id="sw3_glass" width="6" height="6" patternUnits="userSpaceOnUse"><rect width="6" height="6" fill="#dbe6f5"/><line x1="0" y1="0" x2="6" y2="6" stroke="#9fb6d8" stroke-width="0.6"/><line x1="6" y1="0" x2="0" y2="6" stroke="#9fb6d8" stroke-width="0.6"/></pattern><marker id="sw3_ar" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7" fill="none" stroke="#2E4D8A" stroke-width="1.5"/></marker><marker id="sw3_arS" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M7,1 L1,4 L7,7" fill="none" stroke="#2E4D8A" stroke-width="1.5"/></marker><marker id="sw3_lead" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M1,1 L7,4 L1,7" fill="none" stroke="#5a6b8c" stroke-width="1.3"/></marker></defs><text x="28" y="30" font-size="15.5" font-weight="600" fill="#2E4D8A">Side-facing windows</text><text x="28" y="49" font-size="12" fill="#5a6b8c">Must be obscure-glazed; any openable part at least 1.7m above the floor.</text><line x1="30" y1="302" x2="530" y2="302" stroke="#3a4a66" stroke-width="2"/><path d="M172,302 L172,205 L150,205 L260,122 L370,205 L348,205 L348,302 Z" fill="#dff4fb" stroke="#2E4D8A" stroke-width="1.4"/><line x1="172" y1="205" x2="430" y2="205" stroke="#9aa7c0" stroke-width="0.9" stroke-dasharray="4 3"/><text x="436" y="208" font-size="9.5" fill="#7d93b8" text-anchor="start">loft floor</text><rect x="240" y="158" width="40" height="40" fill="url(#sw3_glass)" stroke="#2F5496" stroke-width="1.5"/><text x="260" y="151" font-size="9.5" fill="#2F5496" font-weight="600" text-anchor="middle">side window</text><line x1="206" y1="176" x2="300" y2="176" stroke="#2E4D8A" stroke-width="0.9" stroke-dasharray="4 3" opacity="0.8"/><line x1="218" y1="180.5" x2="218" y2="200.5" stroke="#2E4D8A" stroke-width="1.4" marker-start="url(#sw3_arS)" marker-end="url(#sw3_ar)"/><text x="212" y="194" font-size="10" font-weight="700" fill="#2E4D8A" text-anchor="end">1.7m</text><line x1="370" y1="167" x2="282" y2="167" stroke="#5a6b8c" stroke-width="1" marker-end="url(#sw3_lead)"/><text x="374" y="170" font-size="9.5" fill="#4e7d18" font-weight="600" text-anchor="start">may open</text><line x1="370" y1="189" x2="282" y2="189" stroke="#5a6b8c" stroke-width="1" marker-end="url(#sw3_lead)"/><text x="374" y="192" font-size="9.5" fill="#c0461f" font-weight="600" text-anchor="start">must be fixed</text><rect x="28" y="332" width="504" height="44" rx="8" fill="#FAEEDA" stroke="#EF9F27" stroke-width="1"/><text x="46" y="351" font-size="11" fill="#633806">All side-facing glazing must be <tspan font-weight="700">obscure-glazed</tspan>. Any part that opens must be at least</text><text x="46" y="367" font-size="11" fill="#633806"><tspan font-weight="700">1.7m above the floor</tspan> of the room it serves.</text></svg>`,
+};
+
 const STEPS = {
     s1: {
         label: 'Property type',
@@ -1023,6 +1050,8 @@ const STEPS = {
         question: 'Will the additional roof space created exceed 40 cubic metres (terraced house) or 50 cubic metres (detached or semi-detached)?',
         ref: 'Class B.1(c) — volume limits, inclusive of previous roof additions',
         note: 'Any previous roof space additions count toward this limit, even if made by a previous owner. Terraced: 40m³. Detached/semi-detached: 50m³.',
+        image: 'volume',
+        imageSecondary: 'hip_to_gable',
         yes: 'fail:volume', no: 's6'
     },
     s6: {
@@ -1030,6 +1059,7 @@ const STEPS = {
         question: 'Would the roof extension go beyond the plane of the existing roof slope on the principal elevation that fronts a highway?',
         ref: 'Class B.1(b) — no extension beyond the roof plane of the principal elevation fronting a highway',
         note: 'Front-facing roof extensions (e.g. a front dormer) on the elevation fronting a highway are not permitted development.',
+        image: 'front_slope',
         yes: 'fail:frontroofplane', no: 's7'
     },
     s7: {
@@ -1037,6 +1067,7 @@ const STEPS = {
         question: 'Would any part of the roof extension be higher than the highest part of the existing roof?',
         ref: 'Class B.1(d)(i) — no part higher than the existing ridge',
         note: 'The extension must not exceed the highest part of the existing roof (the ridge).',
+        image: 'height_ridge',
         yes: 'fail:height', no: 's8'
     },
     s8: {
@@ -1051,6 +1082,7 @@ const STEPS = {
         question: 'Will the roof extension be set back at least 20cm from the original eaves, measured along the roof plane?',
         ref: 'Class B.2(b) — minimum 20cm set-back from original eaves',
         note: 'The 20cm distance is measured along the roof plane, not vertically or horizontally.',
+        image: 'eaves_setback',
         yes: 's10', no: 'fail:setback'
     },
     s10: {
@@ -1058,6 +1090,7 @@ const STEPS = {
         question: 'Will any side-facing windows be either obscure-glazed and non-opening, OR have any opening parts more than 1.7m above the floor of the room?',
         ref: 'Class B.2(c) — side window obscure-glazing condition',
         note: 'Side-facing windows must be obscure-glazed AND either non-opening or with openable sections only above 1.7m from the floor. Answer YES if this condition is met (or if there are no side-facing windows).',
+        image: 'side_windows',
         yes: 's11', no: 'fail:sidewindow'
     },
     s11: {
@@ -1169,6 +1202,27 @@ function render() {
     document.getElementById('questionText').textContent = step.question;
     document.getElementById('refText').textContent = step.ref;
     document.getElementById('noteText').textContent = step.note;
+
+    var dWrap = document.getElementById('diagramWrap');
+    var dFig = document.getElementById('diagramFigure');
+    var dSecWrap = document.getElementById('diagramSecondaryWrap');
+    var dSecFig = document.getElementById('diagramSecondaryFigure');
+    if (step.image && LOFT_DIAGRAMS[step.image]) {
+        dFig.innerHTML = LOFT_DIAGRAMS[step.image];
+        dWrap.style.display = 'block';
+        if (step.imageSecondary && LOFT_DIAGRAMS[step.imageSecondary]) {
+            dSecFig.innerHTML = LOFT_DIAGRAMS[step.imageSecondary];
+            dSecWrap.style.display = 'block';
+        } else {
+            dSecWrap.style.display = 'none';
+        }
+    } else {
+        dWrap.style.display = 'none';
+        dFig.innerHTML = '';
+        dSecWrap.style.display = 'none';
+        dSecFig.innerHTML = '';
+    }
+
     document.getElementById('btnBack').style.display = history.length > 0 ? 'inline-flex' : 'none';
     updateProgress();
     renderTrail();
