@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Side Extension — PD Checker — Steve Hunt Partnership</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy:       #2E4D8A;
+            --blue:       #2F5496;
+            --blue-dark:  #253f77;
+            --light-blue: #EEF3FA;
+            --bg:         #f5f5f3;
+            --white:      #ffffff;
+            --border:     rgba(46, 77, 138, 0.13);
+            --text:       #1a1c2e;
+            --text-sub:   #4B5563;
+            --text-muted: #6B7280;
+            --red:        #D85A30;
+            --red-light:  #FEF2EE;
+            --green:      #1A6B3C;
+            --green-light:#EDFAF2;
+            --amber:      #8B5A00;
+            --amber-light:#FFF8E8;
+            --radius:     10px;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle, rgba(47, 84, 150, 0.055) 1px, transparent 1px);
+            background-size: 22px 22px;
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* ── Site header ──────────────────────────────────────────── */
+        .site-header {
+            background: var(--white);
+            border-bottom: 0.5px solid var(--border);
+            border-top: 3px solid var(--navy);
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+
+        .header-inner {
+            max-width: 740px;
+            margin: 0 auto;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shp-mark {
+            width: 34px;
+            height: 34px;
+            background: var(--navy);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .shp-mark span {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        .header-titles {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            line-height: 1.2;
+        }
+
+        .firm-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.9px;
+            text-transform: uppercase;
+        }
+
+        .tool-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.2px;
+        }
+
+        .gpdo-badge {
+            background: var(--light-blue);
+            border: 0.5px solid rgba(47, 84, 150, 0.22);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--blue);
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        /* ── Breadcrumb ───────────────────────────────────────────── */
+        .breadcrumb {
+            background: var(--white);
+            border-bottom: 0.5px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .breadcrumb-inner {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 7px 0;
+        }
+
+        .breadcrumb a {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 160ms var(--ease);
+        }
+
+        .breadcrumb a:hover {
+            color: var(--blue);
+        }
+
+        /* ── Tab bar ──────────────────────────────────────────────── */
+        .tab-bar {
+            background: var(--white);
+            border-bottom: 0.5px solid var(--border);
+            padding: 0 24px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .tab-bar::-webkit-scrollbar { display: none; }
+
+        .tab-bar-inner {
+            max-width: 740px;
+            margin: 0 auto;
+            display: flex;
+        }
+
+        .tab {
+            padding: 11px 18px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            background: none;
+            position: relative;
+            color: var(--text-muted);
+            white-space: nowrap;
+            flex-shrink: 0;
+            cursor: default;
+        }
+
+        .tab.active {
+            color: var(--blue);
+            font-weight: 600;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 2px;
+            background: var(--blue);
+            border-radius: 2px 2px 0 0;
+        }
+
+        .tab.disabled { opacity: 0.45; cursor: not-allowed; }
+
+        .tab.link {
+            cursor: pointer;
+            transition: color 160ms var(--ease);
+        }
+
+        .tab.link:hover { color: var(--blue); }
+
+        .tab-soon {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 600;
+            background: #e5e7eb;
+            color: #9ca3af;
+            padding: 1px 5px;
+            border-radius: 8px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            margin-left: 4px;
+            vertical-align: middle;
+            position: relative;
+            top: -1px;
+        }
+
+        /* ── Progress ─────────────────────────────────────────────── */
+        .progress-section {
+            background: var(--white);
+            border-bottom: 0.5px solid var(--border);
+            padding: 0 24px;
+        }
+
+        .progress-inner {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 11px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .step-counter {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            min-width: 50px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 3px;
+            background: var(--light-blue);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--navy) 0%, var(--blue) 100%);
+            border-radius: 3px;
+            transition: width 400ms var(--ease);
+            width: 0%;
+        }
+
+        .progress-pct {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            min-width: 34px;
+            text-align: right;
+        }
+
+        /* ── Main ─────────────────────────────────────────────────── */
+        .main {
+            max-width: 740px;
+            margin: 0 auto;
+            padding: 28px 24px 48px;
+        }
+
+        /* ── Question card ────────────────────────────────────────── */
+        .question-card {
+            background: var(--white);
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px 32px;
+            margin-bottom: 18px;
+            transition: opacity 160ms var(--ease), transform 160ms var(--ease);
+        }
+
+        .question-card.slide-out {
+            opacity: 0;
+            transform: translateX(-14px);
+            pointer-events: none;
+        }
+
+        .question-card.slide-in {
+            animation: slideInCard 220ms var(--ease) both;
+        }
+
+        @keyframes slideInCard {
+            from { opacity: 0; transform: translateX(14px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            background: var(--light-blue);
+            color: var(--blue);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .question-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 19px;
+            font-weight: 500;
+            color: var(--text);
+            line-height: 1.42;
+            margin-bottom: 10px;
+            letter-spacing: -0.15px;
+        }
+
+        .ref-text {
+            font-size: 12px;
+            font-style: italic;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+            border-bottom: 0.5px solid var(--border);
+        }
+
+        .note-box {
+            background: var(--light-blue);
+            border: 0.5px solid rgba(47, 84, 150, 0.16);
+            border-radius: 8px;
+            padding: 11px 14px;
+            margin-bottom: 22px;
+            display: flex;
+            gap: 9px;
+            align-items: flex-start;
+        }
+
+        .note-icon {
+            font-size: 12px;
+            color: var(--blue);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .note-text {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.58;
+        }
+
+        /* diagram */
+        .diagram-wrap { margin-bottom: 22px; }
+        .diagram-figure { background: var(--white, #fff); border: 0.5px solid var(--border, #cdd6e6); border-radius: 8px; padding: 14px 16px; display: flex; justify-content: center; }
+        .diagram-figure svg { max-width: 100%; height: auto; }
+        .diagram-secondary-label { margin-top: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 7px; color: #8b5a00; font-size: 11px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase; }
+        .diagram-secondary-icon { font-size: 12px; }
+        .diagram-secondary { margin-top: 0; }
+
+        /* buttons */
+        .button-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back {
+            margin-right: auto;
+            padding: 8px 14px;
+            background: none;
+            border: 0.5px solid var(--border);
+            border-radius: 7px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 180ms var(--ease);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-back:hover { border-color: rgba(47,84,150,0.4); color: var(--blue); background: var(--light-blue); }
+
+        .btn-yes {
+            padding: 10px 26px;
+            background: var(--blue);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 180ms var(--ease);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-yes:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(47,84,150,0.28); }
+        .btn-yes:active { transform: translateY(0); box-shadow: none; }
+
+        .btn-no {
+            padding: 10px 26px;
+            background: var(--red-light);
+            color: var(--red);
+            border: 0.5px solid rgba(216, 90, 48, 0.28);
+            border-radius: 7px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 180ms var(--ease);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-no:hover { background: rgba(216,90,48,0.12); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(216,90,48,0.14); }
+        .btn-no:active { transform: translateY(0); box-shadow: none; }
+
+        /* ── Answer trail ─────────────────────────────────────────── */
+        .trail-section { margin-bottom: 0; }
+
+        .trail-header {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.1px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trail-header::after { content: ''; flex: 1; height: 0.5px; background: var(--border); }
+
+        .answer-trail { display: flex; flex-wrap: wrap; gap: 7px; }
+
+        .trail-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--white);
+            border: 0.5px solid var(--border);
+            border-radius: 6px;
+            padding: 5px 10px;
+            animation: trailPop 180ms var(--ease) both;
+        }
+
+        @keyframes trailPop {
+            from { opacity: 0; transform: scale(0.88); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        .trail-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-sub);
+        }
+
+        .trail-answer {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .trail-answer.yes { background: var(--light-blue); color: var(--blue); }
+        .trail-answer.no  { background: var(--red-light);  color: var(--red);  }
+
+        /* ── Outcome card ─────────────────────────────────────────── */
+        .outcome-card {
+            background: var(--white);
+            border: 0.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 34px 32px;
+            margin-bottom: 18px;
+            animation: slideInCard 280ms var(--ease) both;
+        }
+
+        .outcome-card.pass { border-color: rgba(26,107,60,0.25);  border-top: 3px solid var(--green); }
+        .outcome-card.warn { border-color: rgba(139,90,0,0.25);   border-top: 3px solid #CC7A00; }
+        .outcome-card.fail { border-color: rgba(216,90,48,0.25);  border-top: 3px solid var(--red); }
+
+        .outcome-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .outcome-badge.pass { background: var(--green-light); color: var(--green); }
+        .outcome-badge.warn { background: var(--amber-light); color: var(--amber); }
+        .outcome-badge.fail { background: var(--red-light);   color: var(--red);   }
+
+        .outcome-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 21px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 12px;
+            letter-spacing: -0.25px;
+            line-height: 1.3;
+        }
+
+        .outcome-body {
+            font-size: 14px;
+            color: var(--text-sub);
+            line-height: 1.68;
+            margin-bottom: 18px;
+        }
+
+        .outcome-bullets {
+            list-style: none;
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .outcome-bullets li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13.5px;
+            color: var(--text-sub);
+            line-height: 1.55;
+        }
+
+        .bullet-dash { color: var(--text-muted); flex-shrink: 0; margin-top: 1px; font-size: 12px; }
+
+        /* outcome action buttons */
+        .outcome-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-restart {
+            padding: 10px 20px;
+            background: none;
+            border: 0.5px solid var(--border);
+            border-radius: 7px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 180ms var(--ease);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn-restart:hover { border-color: rgba(47,84,150,0.4); color: var(--blue); background: var(--light-blue); }
+
+        .btn-download {
+            padding: 10px 20px;
+            background: var(--blue);
+            color: white;
+            border: none;
+            border-radius: 7px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 180ms var(--ease);
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .btn-download:hover { background: var(--blue-dark); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(47,84,150,0.25); }
+        .btn-download:active { transform: translateY(0); box-shadow: none; }
+
+        /* ── Responsive ───────────────────────────────────────────── */
+        @media (max-width: 600px) {
+            .firm-name { display: none; }
+            .tool-name { font-size: 15px; }
+            .shp-mark { width: 30px; height: 30px; }
+            .shp-mark span { font-size: 11px; }
+            .question-card, .outcome-card { padding: 22px 18px; }
+            .question-text { font-size: 17px; }
+            .btn-yes, .btn-no { padding: 10px 20px; font-size: 13px; }
+            .main { padding: 20px 16px 40px; }
+            .tab { padding: 10px 13px; font-size: 12px; }
+            .tab-soon { display: none; }
+        }
+
+        /* ── Print / PDF styles ───────────────────────────────────── */
+        #printView { display: none; }
+
+        @media print {
+            *, *::before, *::after { box-sizing: border-box; }
+
+            body {
+                background: white !important;
+                background-image: none !important;
+                font-family: 'DM Sans', Georgia, sans-serif;
+                color: #111;
+                font-size: 10.5pt;
+                line-height: 1.5;
+                margin: 0;
+                padding: 0;
+            }
+
+            .site-header,
+            .breadcrumb,
+            .tab-bar,
+            .progress-section,
+            #questionArea,
+            #outcomeArea,
+            #trailSection { display: none !important; }
+
+            .main { padding: 0 !important; max-width: 100% !important; }
+
+            #printView { display: block !important; }
+
+            /* ── Print view layout ── */
+            .pv-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 14pt;
+                padding-bottom: 12pt;
+                border-bottom: 1.5pt solid #2E4D8A;
+            }
+
+            .pv-logo-area {
+                display: flex;
+                align-items: center;
+                gap: 10pt;
+            }
+
+            .pv-logo {
+                width: 36pt;
+                height: 36pt;
+                background: #2E4D8A !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                border-radius: 5pt;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-family: 'Outfit', sans-serif;
+                font-size: 13pt;
+                font-weight: 700;
+                color: white !important;
+                flex-shrink: 0;
+            }
+
+            .pv-firm {
+                font-family: 'Outfit', sans-serif;
+                font-size: 13pt;
+                font-weight: 700;
+                color: #1a1c2e;
+                margin-bottom: 1pt;
+            }
+
+            .pv-subtitle {
+                font-size: 9.5pt;
+                color: #555;
+            }
+
+            .pv-date-area {
+                text-align: right;
+                font-size: 9pt;
+                color: #777;
+                line-height: 1.6;
+            }
+
+            .pv-type-bar {
+                font-family: 'Outfit', sans-serif;
+                font-size: 12pt;
+                font-weight: 600;
+                color: #2E4D8A;
+                margin-bottom: 8pt;
+            }
+
+            .pv-disclaimer {
+                background: #f0f4fb !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                border-left: 3pt solid #2F5496;
+                padding: 7pt 10pt;
+                font-size: 8.5pt;
+                color: #555;
+                margin-bottom: 14pt;
+                line-height: 1.5;
+            }
+
+            .pv-section-head {
+                font-family: 'Outfit', sans-serif;
+                font-size: 8.5pt;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1pt;
+                color: #888;
+                margin: 12pt 0 6pt;
+                padding-bottom: 4pt;
+                border-bottom: 0.5pt solid #ddd;
+            }
+
+            .pv-answer-row {
+                padding: 5pt 0;
+                border-bottom: 0.5pt solid #eee;
+                page-break-inside: avoid;
+            }
+
+            .pv-answer-meta {
+                display: flex;
+                align-items: center;
+                gap: 7pt;
+                margin-bottom: 2pt;
+            }
+
+            .pv-answer-num {
+                font-family: 'Outfit', sans-serif;
+                font-size: 8pt;
+                color: #bbb;
+                font-weight: 600;
+                min-width: 14pt;
+            }
+
+            .pv-answer-label {
+                font-family: 'Outfit', sans-serif;
+                font-size: 9.5pt;
+                font-weight: 600;
+                color: #333;
+                flex: 1;
+            }
+
+            .pv-answer-chip {
+                font-family: 'Outfit', sans-serif;
+                font-size: 8pt;
+                font-weight: 700;
+                padding: 1pt 6pt;
+                border-radius: 3pt;
+                letter-spacing: 0.5pt;
+            }
+
+            .pv-answer-chip.yes {
+                background: #EEF3FA !important;
+                color: #2F5496 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .pv-answer-chip.no {
+                background: #FEF2EE !important;
+                color: #D85A30 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .pv-answer-question {
+                font-size: 9.5pt;
+                color: #444;
+                padding-left: 21pt;
+                line-height: 1.45;
+            }
+
+            .pv-outcome-wrap {
+                margin-top: 4pt;
+                page-break-inside: avoid;
+            }
+
+            .pv-outcome-chip {
+                display: inline-block;
+                font-family: 'Outfit', sans-serif;
+                font-size: 8.5pt;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.5pt;
+                padding: 2pt 9pt;
+                border-radius: 10pt;
+                margin-bottom: 7pt;
+            }
+
+            .pv-outcome-chip.pass {
+                background: #EDFAF2 !important;
+                color: #1A6B3C !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .pv-outcome-chip.fail {
+                background: #FEF2EE !important;
+                color: #D85A30 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .pv-outcome-title {
+                font-family: 'Outfit', sans-serif;
+                font-size: 13pt;
+                font-weight: 600;
+                color: #1a1c2e;
+                margin-bottom: 6pt;
+            }
+
+            .pv-outcome-body {
+                font-size: 10pt;
+                color: #333;
+                line-height: 1.6;
+                margin-bottom: 8pt;
+            }
+
+            .pv-bullets-title {
+                font-size: 9.5pt;
+                font-weight: 600;
+                color: #333;
+                margin: 6pt 0 3pt;
+            }
+
+            .pv-bullets {
+                margin: 0;
+                padding-left: 14pt;
+            }
+
+            .pv-bullets li {
+                font-size: 9.5pt;
+                color: #333;
+                margin-bottom: 3pt;
+                line-height: 1.45;
+            }
+
+            .pv-divider {
+                border: none;
+                border-top: 0.5pt solid #ccc;
+                margin: 12pt 0;
+            }
+
+            .pv-footer {
+                font-size: 7.5pt;
+                color: #aaa;
+                text-align: center;
+                margin-top: 10pt;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Site header ──────────────────────────────────────────────── -->
+<header class="site-header">
+    <div class="header-inner">
+        <div class="header-left">
+            <div class="shp-mark"><span>SHP</span></div>
+            <div class="header-titles">
+                <span class="firm-name">Steve Hunt Partnership</span>
+                <span class="tool-name">Permitted Development Checker</span>
+            </div>
+        </div>
+        <div class="gpdo-badge">England · GPDO 2015</div>
+    </div>
+</header>
+
+<!-- ── Breadcrumb ───────────────────────────────────────────────── -->
+<div class="breadcrumb">
+    <div class="breadcrumb-inner">
+        <a href="index.html">← Return to main menu</a>
+    </div>
+</div>
+
+<!-- ── Tab bar ──────────────────────────────────────────────────── -->
+<nav class="tab-bar" role="tablist">
+    <div class="tab-bar-inner">
+        <button class="tab link" role="tab" aria-selected="false" onclick="window.location='rear-extension.html'">Rear extension</button>
+        <button class="tab active" role="tab" aria-selected="true">Side extension</button>
+        <button class="tab link" role="tab" aria-selected="false" onclick="window.location='loft-conversion.html'">Loft conversion</button>
+        <button class="tab disabled" role="tab" aria-selected="false" disabled>Outbuilding <span class="tab-soon">Soon</span></button>
+        <button class="tab disabled" role="tab" aria-selected="false" disabled>Front / porch <span class="tab-soon">Soon</span></button>
+    </div>
+</nav>
+
+<!-- ── Progress ─────────────────────────────────────────────────── -->
+<div class="progress-section" id="progressSection">
+    <div class="progress-inner">
+        <span class="step-counter" id="stepCounter">Step 1</span>
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+</div>
+
+<!-- ── Main ─────────────────────────────────────────────────────── -->
+<main class="main">
+
+    <!-- Question -->
+    <div id="questionArea">
+        <div class="question-card" id="questionCard">
+            <div class="section-label" id="sectionLabel"></div>
+            <p class="question-text" id="questionText"></p>
+            <p class="ref-text" id="refText"></p>
+            <div class="note-box">
+                <span class="note-icon" aria-hidden="true">ℹ</span>
+                <p class="note-text" id="noteText"></p>
+            </div>
+            <div class="diagram-wrap" id="diagramWrap" style="display:none">
+                <div class="diagram-figure" id="diagramFigure"></div>
+                <div id="diagramSecondaryWrap" style="display:none">
+                    <div class="diagram-secondary-label">
+                        <span class="diagram-secondary-icon" aria-hidden="true">⚠</span>
+                        Common point — worth checking
+                    </div>
+                    <div class="diagram-figure diagram-secondary" id="diagramSecondaryFigure"></div>
+                </div>
+            </div>
+            <div class="button-group">
+                <button class="btn-back" id="btnBack" onclick="handleBack()" style="display:none">← Back</button>
+                <button class="btn-yes" onclick="handleAnswer('yes')">YES</button>
+                <button class="btn-no"  onclick="handleAnswer('no')">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Outcome -->
+    <div id="outcomeArea" style="display:none">
+        <div class="outcome-card" id="outcomeCard">
+            <div class="outcome-badge" id="outcomeBadge"></div>
+            <h2 class="outcome-title" id="outcomeTitle"></h2>
+            <p class="outcome-body" id="outcomeBody"></p>
+            <ul class="outcome-bullets" id="outcomeBullets" style="display:none"></ul>
+            <div class="outcome-actions">
+                <button class="btn-restart" onclick="handleRestart()">↺ &nbsp;Start again</button>
+                <button class="btn-download" onclick="downloadPDF()">⬇ &nbsp;Download PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Answer trail -->
+    <div class="trail-section" id="trailSection" style="display:none">
+        <div class="trail-header">Previous answers</div>
+        <div class="answer-trail" id="answerTrail"></div>
+    </div>
+
+    <!-- Print view (hidden on screen, visible when printing) -->
+    <div id="printView">
+        <div class="pv-header">
+            <div class="pv-logo-area">
+                <div class="pv-logo">SHP</div>
+                <div>
+                    <div class="pv-firm">Steve Hunt Partnership</div>
+                    <div class="pv-subtitle">Permitted Development Assessment</div>
+                </div>
+            </div>
+            <div class="pv-date-area">
+                <div id="pvDate"></div>
+                <div>England · GPDO 2015</div>
+            </div>
+        </div>
+
+        <div class="pv-type-bar">Side Extension — Schedule 2, Part 1, Class A</div>
+
+        <div class="pv-disclaimer">
+            <strong>Disclaimer:</strong> This assessment is provided for guidance purposes only and does not constitute planning advice.
+            Always verify against current legislation and consult the Local Planning Authority before commencing works.
+            A Lawful Development Certificate (LDC) should be obtained to formally confirm permitted development compliance.
+        </div>
+
+        <div class="pv-section-head">Assessment responses</div>
+        <div id="pvAnswers"></div>
+
+        <div class="pv-section-head">Outcome</div>
+        <div class="pv-outcome-wrap" id="pvOutcome"></div>
+
+        <hr class="pv-divider">
+        <div class="pv-footer">
+            Steve Hunt Partnership &nbsp;·&nbsp; Generated by SHP PD Checker &nbsp;·&nbsp; This document is for guidance only and does not constitute a formal planning determination.
+        </div>
+    </div>
+
+</main>
+
+<script>
+'use strict';
+
+/* ── Decision tree ───────────────────────────────────────────────── */
+
+const SIDE_DIAGRAMS = {
+};
+
+const STEPS = {
+    s1: {
+        label: 'Property type',
+        question: 'Is the property a house (not a flat, maisonette, or other building)?',
+        ref: 'Class A applies to dwellinghouses only — GPDO 2015 Schedule 2, Part 1, Class A',
+        note: 'Permitted development allowances for extensions apply to houses only, not flats or maisonettes.',
+        yes: 's2', no: 'fail:notahouse'
+    },
+    s2: {
+        label: 'Listed building',
+        question: 'Is the property a Listed Building?',
+        ref: 'Class A — other consents required for listed buildings',
+        note: 'Listed buildings require Listed Building Consent in addition to any planning permission. Class A PD does not apply.',
+        yes: 'fail:listed', no: 's3'
+    },
+    s3: {
+        label: 'Article 4 / conditions',
+        question: 'Has an Article 4 Direction removed PD rights, or does a planning condition remove them?',
+        ref: 'GPDO 2015 Article 4 — check with LPA',
+        note: 'Check with the Local Planning Authority whether PD rights have been removed. New-build estates and some areas have Article 4 Directions.',
+        yes: 'fail:article4', no: 's4'
+    },
+    s4: {
+        label: 'Designated land',
+        question: 'Is the property on designated land — a National Park, the Broads, an AONB, a Conservation Area, or a World Heritage Site?',
+        ref: 'Class A.1 — side extensions are NOT permitted development on designated land',
+        note: 'This is an absolute exclusion for side extensions. On designated land a side extension always requires a planning application, and cladding restrictions also apply.',
+        yes: 'fail:designated', no: 's5'
+    },
+    s5: {
+        label: 'Width',
+        question: 'Will the side extension be more than half the width of the original house?',
+        ref: 'Class A.1(j)(i) — side extension width limited to half the original house width',
+        note: 'A side extension must not have a width greater than half the width of the original house. The original house is the house as first built, or as it stood on 1 July 1948.',
+        yes: 'fail:width', no: 's6'
+    },
+    s6: {
+        label: 'Number of storeys',
+        question: 'Will the side extension be more than a single storey?',
+        ref: 'Class A.1(j)(ii) — side extensions must be single storey',
+        note: 'Side extensions must be single storey to be permitted development. A two-storey side extension always requires a planning application.',
+        yes: 'fail:storeys', no: 's7'
+    },
+    s7: {
+        label: 'Maximum height',
+        question: 'Will the side extension exceed 4 metres in height?',
+        ref: 'Class A.1(j)(ii) — maximum height of four metres',
+        note: 'A single-storey side extension must not exceed 4 metres in overall height.',
+        yes: 'fail:height', no: 's8'
+    },
+    s8: {
+        label: 'Eaves height near boundary',
+        question: 'If within 2 metres of a boundary, will the eaves height exceed 3 metres?',
+        ref: 'Class A.1(f) — eaves height limited to 3m within 2m of a boundary',
+        note: 'Where the extension is within 2 metres of a boundary, the eaves height must not exceed 3 metres. Answer YES if it is within 2m of a boundary AND the eaves would exceed 3m.',
+        yes: 'fail:eaves', no: 's9'
+    },
+    s9: {
+        label: 'Principal elevation / highway',
+        question: 'Would the extension project forward of the principal elevation, or is it on a side elevation that fronts a highway?',
+        ref: 'Class A.1(a)/(b) — no extension forward of the principal or highway-facing side elevation',
+        note: 'No part of the extension may project forward of the principal elevation. A side extension on an elevation fronting a highway (e.g. on a corner plot) is also not permitted development.',
+        yes: 'fail:highway', no: 's10'
+    },
+    s10: {
+        label: 'Curtilage coverage',
+        question: 'After this extension, will more than 50% of the land around the original house be covered by buildings?',
+        ref: 'Class A.1(c) — maximum 50% curtilage coverage',
+        note: 'The total footprint of all extensions and outbuildings (including sheds and previous extensions) must not exceed 50% of the land around the original house. The original house footprint is excluded from the calculation.',
+        yes: 'fail:coverage', no: 's11'
+    },
+    s11: {
+        label: 'Materials',
+        question: 'Will the materials be of similar appearance to the existing house?',
+        ref: 'Class A.2(a) — materials of similar appearance',
+        note: 'Materials used in the exterior work must be of similar appearance to those of the existing house. (This condition does not apply where the extension is a conservatory.)',
+        yes: 'pass', no: 'fail:materials'
+    }
+};
+
+const OUTCOMES = {
+    'fail:notahouse': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — property not a dwellinghouse',
+        body: 'Class A permitted development rights apply to dwellinghouses (houses) only. Flats, maisonettes, and other buildings are excluded. A full planning application will be required for any side extension to this property.'
+    },
+    'fail:listed': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — Listed Building',
+        body: "A Listed Building cannot benefit from Class A permitted development rights. Both Listed Building Consent and full planning permission will be required. Early pre-application engagement with the LPA's conservation officer is strongly recommended."
+    },
+    'fail:article4': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — PD rights removed',
+        body: 'An Article 4 Direction or planning condition has removed Class A PD rights from this property. A full planning application will be required. Contact the LPA to confirm the extent of the Direction.'
+    },
+    'fail:designated': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — designated land',
+        body: 'Side extensions are not permitted development on designated land (National Parks, the Broads, AONBs, Conservation Areas, and World Heritage Sites). This is an absolute exclusion — a full planning application will be required. Cladding restrictions also apply on designated land.'
+    },
+    'fail:width': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — width exceeds half the house',
+        body: 'A side extension must not be wider than half the width of the original house. The proposed extension exceeds this limit. A full planning application will be required, or the design should be narrowed to comply.'
+    },
+    'fail:storeys': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — more than single storey',
+        body: 'Side extensions must be single storey to be permitted development. A two-storey (or higher) side extension always requires a full planning application.'
+    },
+    'fail:height': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — height exceeds 4m',
+        body: 'A single-storey side extension must not exceed 4 metres in overall height. The proposed extension exceeds this limit. A full planning application will be required, or the height should be reduced to comply.'
+    },
+    'fail:eaves': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — eaves height within 2m of boundary',
+        body: 'Where a side extension is within 2 metres of a boundary, the eaves height must not exceed 3 metres. The proposed extension exceeds this limit. A full planning application will be required, or the eaves height should be reduced.'
+    },
+    'fail:highway': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — principal elevation / highway',
+        body: 'No part of the extension may project forward of the principal elevation, and a side extension fronting a highway (such as on a corner plot) is excluded. A full planning application will be required.'
+    },
+    'fail:coverage': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — curtilage coverage exceeded',
+        body: 'The total footprint of all buildings (extensions plus outbuildings, including sheds and previous extensions) would exceed 50% of the land around the original house. A full planning application will be required.'
+    },
+    'fail:materials': {
+        type: 'fail', badge: 'Not permitted development',
+        title: '✗ Not permitted development — materials non-compliance',
+        body: 'Materials used in the exterior work must be of similar appearance to those of the existing house. The proposed materials do not appear to meet this condition. A pre-application enquiry with the LPA is recommended, or the materials choice should be revised. (This condition does not apply to conservatories.)'
+    },
+    'pass': {
+        type: 'pass', badge: 'Likely permitted development',
+        title: '✓ Likely permitted development',
+        body: 'Based on your answers, this side extension appears to comply with Class A permitted development criteria under the GPDO 2015.'
+    }
+};
+
+const PASS_BULLETS = [
+    'A Lawful Development Certificate (LDC) is strongly recommended to formally confirm PD compliance before work begins',
+    'Building Regulations approval will still be required for a side extension regardless of planning status',
+    'Check for any private covenants or title restrictions',
+    'On designated land, note that cladding of the exterior in certain materials is not permitted development'
+];
+
+const TOTAL_STEPS_ESTIMATE = 12;
+
+/* ── State ───────────────────────────────────────────────────────── */
+let currentStepId = 's1';
+let history = [];
+
+/* ── Helpers ─────────────────────────────────────────────────────── */
+function isOutcome(id) {
+    return id === 'pass' || id.startsWith('fail:') || id.startsWith('warn:');
+}
+
+function escHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── Render question ─────────────────────────────────────────────── */
+function render() {
+    const step = STEPS[currentStepId];
+    if (!step) return;
+    document.getElementById('sectionLabel').textContent = step.label;
+    document.getElementById('questionText').textContent = step.question;
+    document.getElementById('refText').textContent = step.ref;
+    document.getElementById('noteText').textContent = step.note;
+
+    var dWrap = document.getElementById('diagramWrap');
+    var dFig = document.getElementById('diagramFigure');
+    var dSecWrap = document.getElementById('diagramSecondaryWrap');
+    var dSecFig = document.getElementById('diagramSecondaryFigure');
+    if (step.image && SIDE_DIAGRAMS[step.image]) {
+        dFig.innerHTML = SIDE_DIAGRAMS[step.image];
+        dWrap.style.display = 'block';
+        if (step.imageSecondary && SIDE_DIAGRAMS[step.imageSecondary]) {
+            dSecFig.innerHTML = SIDE_DIAGRAMS[step.imageSecondary];
+            dSecWrap.style.display = 'block';
+        } else {
+            dSecWrap.style.display = 'none';
+        }
+    } else {
+        dWrap.style.display = 'none';
+        dFig.innerHTML = '';
+        dSecWrap.style.display = 'none';
+        dSecFig.innerHTML = '';
+    }
+
+    document.getElementById('btnBack').style.display = history.length > 0 ? 'inline-flex' : 'none';
+    updateProgress();
+    renderTrail();
+}
+
+function updateProgress() {
+    const pct = Math.min(Math.round((history.length / TOTAL_STEPS_ESTIMATE) * 100), 95);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressPct').textContent = pct + '%';
+    document.getElementById('stepCounter').textContent = 'Step ' + (history.length + 1);
+}
+
+/* ── Answer trail ────────────────────────────────────────────────── */
+function renderTrail() {
+    const section = document.getElementById('trailSection');
+    const trail = document.getElementById('answerTrail');
+    if (history.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    trail.innerHTML = history.map(function(h) {
+        return '<div class="trail-item">'
+            + '<span class="trail-label">' + escHtml(h.label) + '</span>'
+            + '<span class="trail-answer ' + h.answer + '">' + h.answer.toUpperCase() + '</span>'
+            + '</div>';
+    }).join('');
+}
+
+/* ── Outcome ─────────────────────────────────────────────────────── */
+function renderOutcome(outcomeId) {
+    const outcome = OUTCOMES[outcomeId];
+    if (!outcome) return;
+
+    document.getElementById('questionArea').style.display = 'none';
+    document.getElementById('progressSection').style.display = 'none';
+    document.getElementById('outcomeArea').style.display = 'block';
+
+    const card = document.getElementById('outcomeCard');
+    card.className = 'outcome-card ' + outcome.type;
+
+    const badge = document.getElementById('outcomeBadge');
+    badge.className = 'outcome-badge ' + outcome.type;
+    badge.textContent = outcome.badge;
+
+    document.getElementById('outcomeTitle').textContent = outcome.title;
+    document.getElementById('outcomeBody').textContent = outcome.body;
+
+    const bulletList = document.getElementById('outcomeBullets');
+    if (outcome.type === 'pass') {
+        bulletList.style.display = 'flex';
+        bulletList.innerHTML = PASS_BULLETS.map(function(b) {
+            return '<li><span class="bullet-dash">—</span>' + escHtml(b) + '</li>';
+        }).join('');
+    } else {
+        bulletList.style.display = 'none';
+    }
+
+    renderTrail();
+    populatePrintView(outcomeId);
+}
+
+/* ── PDF print view ──────────────────────────────────────────────── */
+function populatePrintView(outcomeId) {
+    const now = new Date();
+    document.getElementById('pvDate').textContent = now.toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric'
+    });
+
+    /* Answers */
+    let aHtml = '';
+    history.forEach(function(h, i) {
+        const step = STEPS[h.stepId];
+        aHtml += '<div class="pv-answer-row">'
+            + '<div class="pv-answer-meta">'
+            + '<span class="pv-answer-num">' + (i + 1) + '</span>'
+            + '<span class="pv-answer-label">' + escHtml(h.label) + '</span>'
+            + '<span class="pv-answer-chip ' + h.answer + '">' + h.answer.toUpperCase() + '</span>'
+            + '</div>'
+            + '<p class="pv-answer-question">' + escHtml(step ? step.question : '') + '</p>'
+            + '</div>';
+    });
+    document.getElementById('pvAnswers').innerHTML = aHtml;
+
+    /* Outcome */
+    const outcome = OUTCOMES[outcomeId];
+    if (!outcome) return;
+
+    let oHtml = '<span class="pv-outcome-chip ' + outcome.type + '">' + escHtml(outcome.badge) + '</span>'
+        + '<h3 class="pv-outcome-title">' + escHtml(outcome.title) + '</h3>'
+        + '<p class="pv-outcome-body">' + escHtml(outcome.body) + '</p>';
+
+    if (outcome.type === 'pass') {
+        oHtml += '<p class="pv-bullets-title">Recommended next steps:</p>'
+            + '<ul class="pv-bullets">'
+            + PASS_BULLETS.map(function(b) { return '<li>' + escHtml(b) + '</li>'; }).join('')
+            + '</ul>';
+    }
+
+    document.getElementById('pvOutcome').innerHTML = oHtml;
+}
+
+function downloadPDF() {
+    window.print();
+}
+
+/* ── Actions ─────────────────────────────────────────────────────── */
+function handleAnswer(answer) {
+    const step = STEPS[currentStepId];
+    if (!step) return;
+
+    const nextId = step[answer];
+
+    history.push({ stepId: currentStepId, answer: answer, label: step.label });
+
+    const card = document.getElementById('questionCard');
+    card.classList.add('slide-out');
+
+    setTimeout(function() {
+        card.classList.remove('slide-out');
+        if (isOutcome(nextId)) {
+            renderOutcome(nextId);
+        } else {
+            currentStepId = nextId;
+            card.classList.remove('slide-in');
+            void card.offsetWidth;
+            card.classList.add('slide-in');
+            render();
+            setTimeout(function() { card.classList.remove('slide-in'); }, 280);
+        }
+    }, 170);
+}
+
+function handleBack() {
+    if (history.length === 0) return;
+    const last = history.pop();
+    currentStepId = last.stepId;
+
+    const card = document.getElementById('questionCard');
+    card.classList.remove('slide-in');
+    void card.offsetWidth;
+    card.classList.add('slide-in');
+    render();
+    setTimeout(function() { card.classList.remove('slide-in'); }, 280);
+}
+
+function handleRestart() {
+    currentStepId = 's1';
+    history = [];
+
+    document.getElementById('questionArea').style.display = 'block';
+    document.getElementById('progressSection').style.display = 'block';
+    document.getElementById('outcomeArea').style.display = 'none';
+
+    const card = document.getElementById('questionCard');
+    card.classList.remove('slide-in');
+    void card.offsetWidth;
+    card.classList.add('slide-in');
+    render();
+    setTimeout(function() { card.classList.remove('slide-in'); }, 280);
+}
+
+/* ── Init ────────────────────────────────────────────────────────── */
+render();
+</script>
+</body>
+</html>
