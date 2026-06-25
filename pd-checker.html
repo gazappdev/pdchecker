@@ -249,7 +249,7 @@
         }
 
         /* ── Card meta row ────────────────────────────────────────── */
-        .card-meta {
+        .card-meta { gap: 8px; flex-wrap: wrap;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -300,7 +300,7 @@
         }
 
         /* ── Card title ───────────────────────────────────────────── */
-        .card-title {
+        .card-title { margin: 0; flex: 1;
             font-family: 'Outfit', sans-serif;
             font-size: 17px;
             font-weight: 600;
@@ -432,7 +432,7 @@
             <div class="card-body">
                 <div class="card-meta">
                     <span class="card-class">Class A</span>
-                    <span class="card-status available">Available</span>
+                    <h2 class="card-title">Rear extension</h2>
                 </div>
                 <div class="card-icon">
                     <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -446,7 +446,7 @@
                         <rect x="9" y="22" width="5" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
                     </svg>
                 </div>
-                <h2 class="card-title">Rear extension</h2>
+                
                 <p class="card-desc">Single and two-storey extensions to the rear of a dwellinghouse, including depth limits, height constraints, the Neighbour Consultation Scheme, and curtilage coverage.</p>
                 <div class="card-footer">
                     <span class="card-ref">GPDO 2015, Part 1, Class A</span>
@@ -461,6 +461,7 @@
             <div class="card-body">
                 <div class="card-meta">
                     <span class="card-class">Class A</span>
+                    <h2 class="card-title">Side extension</h2>
                     <span class="card-status in-dev">In development</span>
                 </div>
                 <div class="card-icon">
@@ -475,7 +476,7 @@
                         <rect x="17" y="22" width="5" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
                     </svg>
                 </div>
-                <h2 class="card-title">Side extension</h2>
+                
                 <p class="card-desc">Additions to the side elevation of a dwellinghouse, including width restrictions, designation area rules, and the 50% dwelling width limit.</p>
                 <div class="card-footer">
                     <span class="card-ref">GPDO 2015, Part 1, Class A</span>
@@ -490,7 +491,7 @@
             <div class="card-body">
                 <div class="card-meta">
                     <span class="card-class">Class B</span>
-                    <span class="card-status available">Available</span>
+                    <h2 class="card-title">Loft conversion</h2>
                 </div>
                 <div class="card-icon">
                     <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -505,7 +506,7 @@
                         <rect x="12" y="22" width="5" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
                     </svg>
                 </div>
-                <h2 class="card-title">Loft conversion</h2>
+                
                 <p class="card-desc">Roof alterations, dormers, hip-to-gable conversions, and the addition of rooflights — cubic metre volume limits and ridge height rules.</p>
                 <div class="card-footer">
                     <span class="card-ref">GPDO 2015, Part 1, Class B</span>
@@ -520,6 +521,7 @@
             <div class="card-body">
                 <div class="card-meta">
                     <span class="card-class">Class E</span>
+                    <h2 class="card-title">Outbuilding</h2>
                     <span class="card-status in-dev">In development</span>
                 </div>
                 <div class="card-icon">
@@ -531,7 +533,7 @@
                         <rect x="8" y="22" width="4" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
                     </svg>
                 </div>
-                <h2 class="card-title">Outbuilding</h2>
+                
                 <p class="card-desc">Sheds, garages, greenhouses, home offices, swimming pools, and other ancillary structures within the curtilage of a dwellinghouse.</p>
                 <div class="card-footer">
                     <span class="card-ref">GPDO 2015, Part 1, Class E</span>
@@ -546,6 +548,7 @@
             <div class="card-body">
                 <div class="card-meta">
                     <span class="card-class">Class D</span>
+                    <h2 class="card-title">Porch</h2>
                     <span class="card-status in-dev">In development</span>
                 </div>
                 <div class="card-icon">
@@ -557,7 +560,7 @@
                         <rect x="14" y="24" width="6" height="6" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
                     </svg>
                 </div>
-                <h2 class="card-title">Porch</h2>
+                
                 <p class="card-desc">Erection or construction of a porch outside any external door of a dwellinghouse, subject to size and highway boundary limits.</p>
                 <div class="card-footer">
                     <span class="card-ref">GPDO 2015, Part 1, Class D</span>
