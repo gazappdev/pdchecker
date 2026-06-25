@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PD Checker — Steve Hunt Partnership</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy:       #2E4D8A;
+            --blue:       #2F5496;
+            --blue-dark:  #253f77;
+            --light-blue: #EEF3FA;
+            --bg:         #f5f5f3;
+            --white:      #ffffff;
+            --border:     rgba(46, 77, 138, 0.13);
+            --text:       #1a1c2e;
+            --text-sub:   #4B5563;
+            --text-muted: #6B7280;
+            --ease:       cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            background-image: radial-gradient(circle, rgba(47, 84, 150, 0.055) 1px, transparent 1px);
+            background-size: 22px 22px;
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+
+        /* ── Site header ──────────────────────────────────────────── */
+        .site-header {
+            background: var(--white);
+            border-bottom: 0.5px solid var(--border);
+            border-top: 3px solid var(--navy);
+            padding: 0 24px;
+        }
+
+        .header-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .shp-mark {
+            width: 36px;
+            height: 36px;
+            background: var(--navy);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .shp-mark span {
+            font-family: 'Outfit', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        .header-titles {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .firm-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.9px;
+            text-transform: uppercase;
+        }
+
+        .tool-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+
+        .gpdo-badge {
+            background: var(--light-blue);
+            border: 0.5px solid rgba(47, 84, 150, 0.22);
+            border-radius: 20px;
+            padding: 5px 13px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--blue);
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+        }
+
+        /* ── Hero ─────────────────────────────────────────────────── */
+        .hero {
+            background: var(--white);
+            border-bottom: 0.5px solid var(--border);
+            padding: 36px 24px 32px;
+        }
+
+        .hero-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 10px;
+        }
+
+        .hero-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.5px;
+            line-height: 1.25;
+            margin-bottom: 10px;
+        }
+
+        .hero-desc {
+            font-size: 15px;
+            color: var(--text-sub);
+            line-height: 1.65;
+            max-width: 600px;
+        }
+
+        /* ── Main ─────────────────────────────────────────────────── */
+        .main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 24px 56px;
+        }
+
+        /* ── Section header ───────────────────────────────────────── */
+        .section-head {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-head::after {
+            content: '';
+            flex: 1;
+            height: 0.5px;
+            background: var(--border);
+        }
+
+        /* ── Checker grid ─────────────────────────────────────────── */
+        .checker-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* ── Checker card base ────────────────────────────────────── */
+        .checker-card {
+            background: var(--white);
+            border: 0.5px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            position: relative;
+        }
+
+        /* Available card */
+        .checker-card.available {
+            border-color: rgba(47, 84, 150, 0.2);
+            cursor: pointer;
+            transition: transform 200ms var(--ease), box-shadow 200ms var(--ease), border-color 200ms var(--ease);
+        }
+
+        .checker-card.available:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(47, 84, 150, 0.14);
+            border-color: rgba(47, 84, 150, 0.35);
+        }
+
+        .checker-card.available:hover .card-cta {
+            color: var(--blue-dark);
+            gap: 8px;
+        }
+
+        /* Coming soon card */
+        .checker-card.soon {
+            cursor: default;
+            opacity: 0.55;
+        }
+
+        /* ── Card accent bar ──────────────────────────────────────── */
+        .card-accent {
+            height: 3px;
+            background: #d1d5db;
+        }
+
+        .checker-card.available .card-accent {
+            background: linear-gradient(90deg, var(--navy), var(--blue));
+        }
+
+        /* ── Card body ────────────────────────────────────────────── */
+        .card-body {
+            padding: 20px 22px 22px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            gap: 0;
+        }
+
+        /* ── Card meta row ────────────────────────────────────────── */
+        .card-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .card-class {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .card-status {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .card-status.in-dev { background: #FFF3CD; color: #856404; }
+        .checker-card.in-dev { opacity: 0.85; }
+        .checker-card.in-dev:hover { box-shadow: 0 8px 28px rgba(46,77,138,0.10); transform: translateY(-2px); }
+        .checker-card.in-dev:hover .card-cta { color: var(--blue); }
+        .checker-card.in-dev .card-accent { background: linear-gradient(90deg, var(--navy), var(--blue)); }
+        .card-status.available {
+            background: var(--light-blue);
+            color: var(--blue);
+        }
+
+        .card-status.soon {
+            background: #f3f4f6;
+            color: #9ca3af;
+        }
+
+        /* ── Card icon area ───────────────────────────────────────── */
+        .card-icon {
+            margin-bottom: 12px;
+        }
+
+        .card-icon svg {
+            display: block;
+        }
+
+        /* ── Card title ───────────────────────────────────────────── */
+        .card-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.2px;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        /* ── Card description ─────────────────────────────────────── */
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.6;
+            margin-bottom: 18px;
+            flex: 1;
+        }
+
+        /* ── Card footer ──────────────────────────────────────────── */
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 14px;
+            border-top: 0.5px solid var(--border);
+            margin-top: auto;
+        }
+
+        .card-ref {
+            font-family: 'Outfit', sans-serif;
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.2px;
+        }
+
+        .card-cta {
+            font-family: 'Outfit', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--blue);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: gap 180ms var(--ease), color 180ms var(--ease);
+            white-space: nowrap;
+        }
+
+        /* ── Guidance note ────────────────────────────────────────── */
+        .guidance-box {
+            background: var(--light-blue);
+            border: 0.5px solid rgba(47, 84, 150, 0.15);
+            border-radius: 8px;
+            padding: 14px 18px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .guidance-icon {
+            font-size: 13px;
+            color: var(--blue);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .guidance-text {
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.6;
+        }
+
+        .guidance-text strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* ── Responsive ───────────────────────────────────────────── */
+        @media (max-width: 780px) {
+            .checker-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 520px) {
+            .checker-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 22px; }
+            .firm-name { display: none; }
+            .tool-name { font-size: 15px; }
+            .shp-mark { width: 32px; height: 32px; }
+            .main { padding: 24px 16px 48px; }
+            .hero { padding: 24px 16px 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Site header ──────────────────────────────────────────────── -->
+<header class="site-header">
+    <div class="header-inner" style="justify-content:space-between;">
+        <div class="header-left">
+            <div class="shp-mark"><span>SHP</span></div>
+            <div class="header-titles">
+                <span class="firm-name">Steve Hunt Partnership</span>
+                <span class="tool-name">Permitted Development Checker</span>
+            </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;"><div class="gpdo-badge">England · GPDO 2015</div><a href="index.html" style="font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#6B7280;text-decoration:none;">← Home</a></div>
+    </div>
+</header>
+
+<!-- ── Hero ─────────────────────────────────────────────────────── -->
+<div class="hero">
+    <div class="hero-inner">
+        <div class="hero-eyebrow">Assessment tool</div>
+        <h1 class="hero-title">Select an assessment type to begin</h1>
+        <p class="hero-desc">Step-by-step permitted development checks under the Town and Country Planning (General Permitted Development) (England) Order 2015. Each checker walks through the relevant decision criteria and provides an indicative outcome.</p>
+    </div>
+</div>
+
+<!-- ── Main ─────────────────────────────────────────────────────── -->
+<main class="main">
+
+    <div class="section-head">Available assessments</div>
+
+    <div class="checker-grid">
+
+        <!-- ── Rear extension — ACTIVE ─────────────────────────── -->
+        <a href="rear-extension.html" class="checker-card available">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class A</span>
+                    <span class="card-status available">Available</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- House body -->
+                        <rect x="2" y="14" width="22" height="16" rx="1" fill="#EEF3FA" stroke="#2F5496" stroke-width="1.2"/>
+                        <!-- Roof -->
+                        <path d="M1 15 L13 4 L25 15" stroke="#2F5496" stroke-width="1.2" stroke-linejoin="round" fill="#EEF3FA"/>
+                        <!-- Rear extension -->
+                        <rect x="24" y="19" width="18" height="11" rx="1" fill="#2F5496" fill-opacity="0.15" stroke="#2F5496" stroke-width="1.2" stroke-dasharray="2.5 1.5"/>
+                        <!-- Door -->
+                        <rect x="9" y="22" width="5" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Rear extension</h2>
+                <p class="card-desc">Single and two-storey extensions to the rear of a dwellinghouse, including depth limits, height constraints, the Neighbour Consultation Scheme, and curtilage coverage.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class A</span>
+                    <span class="card-cta">Start →</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- ── Side extension — IN DEVELOPMENT ─────────────────── -->
+        <a href="side-extension.html" class="checker-card in-dev">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class A</span>
+                    <span class="card-status in-dev">In development</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- House body -->
+                        <rect x="10" y="14" width="22" height="16" rx="1" fill="#EEF3FA" stroke="#2F5496" stroke-width="1.2"/>
+                        <!-- Roof -->
+                        <path d="M9 15 L21 4 L33 15" stroke="#2F5496" stroke-width="1.2" stroke-linejoin="round" fill="#EEF3FA"/>
+                        <!-- Side extension -->
+                        <rect x="2" y="18" width="9" height="12" rx="1" fill="#2F5496" fill-opacity="0.15" stroke="#2F5496" stroke-width="1.2" stroke-dasharray="2.5 1.5"/>
+                        <!-- Door -->
+                        <rect x="17" y="22" width="5" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Side extension</h2>
+                <p class="card-desc">Additions to the side elevation of a dwellinghouse, including width restrictions, designation area rules, and the 50% dwelling width limit.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class A</span>
+                    <span class="card-cta">Start →</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- ── Loft conversion — ACTIVE ───────────────────────── -->
+        <a href="loft-conversion.html" class="checker-card available">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class B</span>
+                    <span class="card-status available">Available</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- House body -->
+                        <rect x="4" y="18" width="28" height="12" rx="1" fill="#EEF3FA" stroke="#2F5496" stroke-width="1.2"/>
+                        <!-- Main roof -->
+                        <path d="M3 19 L18 6 L33 19" stroke="#2F5496" stroke-width="1.2" stroke-linejoin="round" fill="#EEF3FA"/>
+                        <!-- Dormer -->
+                        <rect x="13" y="9" width="10" height="7" rx="0.5" fill="#2F5496" fill-opacity="0.15" stroke="#2F5496" stroke-width="1.2" stroke-dasharray="2 1.5"/>
+                        <path d="M12 10 L18 5 L24 10" stroke="#2F5496" stroke-width="1.2" fill="#2F5496" fill-opacity="0.15"/>
+                        <!-- Door -->
+                        <rect x="12" y="22" width="5" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Loft conversion</h2>
+                <p class="card-desc">Roof alterations, dormers, hip-to-gable conversions, and the addition of rooflights — cubic metre volume limits and ridge height rules.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class B</span>
+                    <span class="card-cta">Start →</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- ── Outbuilding — ACTIVE ─────────────────────────────── -->
+        <a href="outbuilding.html" class="checker-card in-dev">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class E</span>
+                    <span class="card-status in-dev">In development</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="26" y="16" width="16" height="14" rx="1" fill="#EEF3FA" stroke="#2F5496" stroke-width="1.2"/>
+                        <path d="M25 17 L34 10 L43 17" stroke="#2F5496" stroke-width="1.2" stroke-linejoin="round" fill="#EEF3FA"/>
+                        <rect x="2" y="14" width="20" height="16" rx="1" fill="#EEF3FA" stroke="#2F5496" stroke-width="1.2"/>
+                        <path d="M1 15 L12 5 L23 15" stroke="#2F5496" stroke-width="1.2" stroke-linejoin="round" fill="#EEF3FA"/>
+                        <rect x="8" y="22" width="4" height="8" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Outbuilding</h2>
+                <p class="card-desc">Sheds, garages, greenhouses, home offices, swimming pools, and other ancillary structures within the curtilage of a dwellinghouse.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class E</span>
+                    <span class="card-cta">Start →</span>
+                </div>
+            </div>
+        </a>
+
+        <!-- ── Porch — ACTIVE ───────────────────────────────────── -->
+        <a href="porch.html" class="checker-card in-dev">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-class">Class D</span>
+                    <span class="card-status in-dev">In development</span>
+                </div>
+                <div class="card-icon">
+                    <svg width="44" height="32" viewBox="0 0 44 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="14" width="28" height="16" rx="1" fill="#EEF3FA" stroke="#2F5496" stroke-width="1.2"/>
+                        <path d="M1 15 L16 4 L31 15" stroke="#2F5496" stroke-width="1.2" stroke-linejoin="round" fill="#EEF3FA"/>
+                        <rect x="12" y="20" width="10" height="10" rx="1" fill="#2F5496" fill-opacity="0.15" stroke="#2F5496" stroke-width="1.2"/>
+                        <path d="M11 21 L17 16 L23 21" stroke="#2F5496" stroke-width="1.2" stroke-linejoin="round" fill="#2F5496" fill-opacity="0.15"/>
+                        <rect x="14" y="24" width="6" height="6" rx="0.5" fill="#2F5496" fill-opacity="0.3"/>
+                    </svg>
+                </div>
+                <h2 class="card-title">Porch</h2>
+                <p class="card-desc">Erection or construction of a porch outside any external door of a dwellinghouse, subject to size and highway boundary limits.</p>
+                <div class="card-footer">
+                    <span class="card-ref">GPDO 2015, Part 1, Class D</span>
+                    <span class="card-cta">Start →</span>
+                </div>
+            </div>
+        </a>
+
+    </div>
+
+    <!-- ── Guidance note ──────────────────────────────────────── -->
+    <div class="guidance-box">
+        <span class="guidance-icon" aria-hidden="true">ℹ</span>
+        <p class="guidance-text">
+            <strong>For guidance only.</strong> These assessments step through the permitted development criteria under the GPDO 2015 and provide an indicative outcome. They do not constitute formal planning advice or a determination by a Local Planning Authority. Where PD compliance is confirmed, a <strong>Lawful Development Certificate (LDC)</strong> is strongly recommended before commencing works.
+        </p>
+    </div>
+
+</main>
+
+</body>
+</html>

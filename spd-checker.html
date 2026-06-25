@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPD Checker — Steve Hunt Partnership</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --navy: #2E4D8A; --blue: #2F5496; --blue-dark: #253f77;
+            --light-blue: #EEF3FA; --bg: #f5f5f3; --white: #ffffff;
+            --border: rgba(46,77,138,0.13); --text: #1a1c2e;
+            --text-sub: #4B5563; --text-muted: #6B7280;
+            --ease: cubic-bezier(0.4,0,0.2,1);
+        }
+        body { font-family: 'DM Sans', system-ui, sans-serif; background-color: var(--bg); background-image: radial-gradient(circle, rgba(47,84,150,0.055) 1px, transparent 1px); background-size: 22px 22px; color: var(--text); min-height: 100vh; line-height: 1.5; }
+        .site-header { background: var(--white); border-bottom: 0.5px solid var(--border); border-top: 3px solid var(--navy); padding: 0 24px; }
+        .header-inner { max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+        .header-left { display: flex; align-items: center; gap: 14px; }
+        .shp-badge { background: var(--navy); border-radius: 6px; padding: 6px 10px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; color: white; letter-spacing: 0.5px; }
+        .header-titles { display: flex; flex-direction: column; gap: 1px; }
+        .header-sub { font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.6px; text-transform: uppercase; }
+        .header-title { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: -0.2px; }
+        .back-link { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; color: var(--text-muted); text-decoration: none; display: flex; align-items: center; gap: 5px; }
+        .back-link:hover { color: var(--navy); }
+        main { max-width: 900px; margin: 0 auto; padding: 48px 24px 64px; }
+        .hero { margin-bottom: 44px; }
+        .hero-label { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; color: var(--blue); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+        .hero-heading { font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 700; color: var(--navy); letter-spacing: -0.5px; margin-bottom: 10px; }
+        .hero-sub { font-size: 15px; color: var(--text-sub); max-width: 560px; }
+        .checker-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+        .checker-card { display: flex; flex-direction: column; background: var(--white); border: 0.5px solid var(--border); border-radius: 14px; overflow: hidden; text-decoration: none; color: inherit; transition: box-shadow 180ms var(--ease), transform 180ms var(--ease); }
+        .checker-card.available:hover { box-shadow: 0 8px 28px rgba(46,77,138,0.13); transform: translateY(-2px); }
+        .checker-card.available:hover .card-cta { color: var(--blue); }
+        .checker-card.soon { opacity: 0.62; cursor: default; pointer-events: none; }
+        .checker-card.in-dev { opacity: 0.85; }
+        .checker-card.in-dev:hover { box-shadow: 0 8px 28px rgba(46,77,138,0.10); transform: translateY(-2px); }
+        .checker-card.in-dev:hover .card-cta { color: var(--blue); }
+        .card-accent { height: 4px; background: var(--light-blue); }
+        .checker-card.available .card-accent, .checker-card.in-dev .card-accent { background: linear-gradient(90deg, var(--navy), var(--blue)); }
+        .card-body { padding: 22px 22px 20px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+        .card-meta { display: flex; align-items: center; justify-content: space-between; }
+        .card-region { font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.3px; }
+        .card-status { font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; }
+        .card-status.available { background: #e6f4ea; color: #2d6a4f; }
+        .card-status.in-dev { background: #FFF3CD; color: #856404; }
+        .card-status.soon { background: #f3f4f6; color: #6B7280; }
+        .card-title { font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700; color: var(--navy); letter-spacing: -0.2px; }
+        .card-desc { font-size: 13.5px; color: var(--text-sub); line-height: 1.55; flex: 1; }
+        .card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 0.5px solid var(--border); margin-top: 4px; }
+        .card-ref { font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 500; color: var(--text-muted); }
+        .card-cta { font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-muted); transition: color 150ms var(--ease); }
+    </style>
+</head>
+<body>
+<header class="site-header">
+    <div class="header-inner">
+        <div class="header-left">
+            <div class="shp-badge">SHP</div>
+            <div class="header-titles">
+                <span class="header-sub">Steve Hunt Partnership</span>
+                <span class="header-title">SPD Checker</span>
+            </div>
+        </div>
+        <a href="index.html" class="back-link">← Home</a>
+    </div>
+</header>
+<main>
+    <div class="hero">
+        <p class="hero-label">SPD Checker</p>
+        <h1 class="hero-heading">Select a council</h1>
+        <p class="hero-sub">Each council's checker is built from their Supplementary Planning Document — covering design guidance, amenity rules, parking, and policy requirements for planning applications.</p>
+    </div>
+    <div class="checker-grid">
+        <!-- Warrington -->
+        <a href="warrington-spd.html" class="checker-card in-dev">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-region">Cheshire / Merseyside</span>
+                    <span class="card-status in-dev">In development</span>
+                </div>
+                <h2 class="card-title">Warrington</h2>
+                <p class="card-desc">House extensions policy checker based on Warrington Borough Council's House Extensions SPD (June 2021) — design, amenity, parking, green belt, flood risk, and type-specific guidance.</p>
+                <div class="card-footer">
+                    <span class="card-ref">WBC House Extensions SPD 2021</span>
+                    <span class="card-cta">Start →</span>
+                </div>
+            </div>
+        </a>
+        <!-- Halton — coming soon -->
+        <div class="checker-card soon">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-region">Cheshire</span>
+                    <span class="card-status soon">Coming soon</span>
+                </div>
+                <h2 class="card-title">Halton</h2>
+                <p class="card-desc">Policy checker for Halton Borough Council — coming once the SPD has been reviewed and questions built.</p>
+                <div class="card-footer">
+                    <span class="card-ref">Halton BC planning policy</span>
+                </div>
+            </div>
+        </div>
+        <!-- Cheshire East — coming soon -->
+        <div class="checker-card soon">
+            <div class="card-accent"></div>
+            <div class="card-body">
+                <div class="card-meta">
+                    <span class="card-region">Cheshire</span>
+                    <span class="card-status soon">Coming soon</span>
+                </div>
+                <h2 class="card-title">Cheshire East</h2>
+                <p class="card-desc">Policy checker for Cheshire East Council — coming once the SPD has been reviewed and questions built.</p>
+                <div class="card-footer">
+                    <span class="card-ref">CEC planning policy</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

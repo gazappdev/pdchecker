@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warrington SPD Checker — Steve Hunt Partnership</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --navy: #2E4D8A; --blue: #2F5496; --blue-dark: #253f77;
+            --light-blue: #EEF3FA; --amber: #8b5a00; --amber-light: #FAEEDA;
+            --bg: #f5f5f3; --white: #ffffff; --border: rgba(46,77,138,0.13);
+            --text: #1a1c2e; --text-sub: #4B5563; --text-muted: #6B7280;
+            --ease: cubic-bezier(0.4,0,0.2,1);
+        }
+        body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); background-image: radial-gradient(circle, rgba(47,84,150,0.055) 1px, transparent 1px); background-size: 22px 22px; color: var(--text); min-height: 100vh; line-height: 1.5; }
+        /* header */
+        .site-header { background: var(--white); border-bottom: 0.5px solid var(--border); border-top: 3px solid var(--navy); padding: 0 24px; }
+        .header-inner { max-width: 740px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+        .header-left { display: flex; align-items: center; gap: 14px; }
+        .shp-mark { background: var(--navy); border-radius: 6px; padding: 6px 10px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700; color: white; letter-spacing: 0.5px; }
+        .header-titles { display: flex; flex-direction: column; gap: 1px; }
+        .firm-name { font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.6px; text-transform: uppercase; }
+        .tool-name { font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: var(--navy); letter-spacing: -0.2px; }
+        .header-links { display: flex; align-items: center; gap: 14px; }
+        .spd-doc-link { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; color: var(--blue); text-decoration: none; border: 1px solid rgba(47,84,150,0.25); border-radius: 6px; padding: 5px 10px; }
+        .spd-doc-link:hover { background: var(--light-blue); }
+        .back-link { font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 600; color: var(--text-muted); text-decoration: none; }
+        .back-link:hover { color: var(--navy); }
+        /* type bar */
+        .type-bar { background: var(--navy); padding: 8px 24px; }
+        .type-bar-inner { max-width: 740px; margin: 0 auto; font-family: 'Outfit', sans-serif; font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,0.7); letter-spacing: 0.3px; }
+        .type-bar-inner span { color: #fff; }
+        /* progress */
+        .progress-bar-wrap { background: var(--white); border-bottom: 0.5px solid var(--border); padding: 0 24px; }
+        .progress-bar-inner { max-width: 740px; margin: 0 auto; padding: 10px 0; display: flex; align-items: center; gap: 12px; }
+        .progress-track { flex: 1; height: 4px; background: var(--light-blue); border-radius: 2px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, var(--navy), var(--blue)); border-radius: 2px; transition: width 300ms var(--ease); }
+        .progress-label { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600; color: var(--text-muted); white-space: nowrap; }
+        /* main */
+        main { max-width: 740px; margin: 0 auto; padding: 36px 24px 64px; }
+        /* type select */
+        #typeSelectWrap { display: block; }
+        .type-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 20px; }
+        .type-btn { background: var(--white); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; cursor: pointer; text-align: left; transition: border-color 150ms, box-shadow 150ms; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; color: var(--navy); }
+        .type-btn:hover { border-color: var(--blue); box-shadow: 0 4px 14px rgba(46,77,138,0.10); }
+        .type-btn-sub { font-family: 'DM Sans', sans-serif; font-size: 11.5px; font-weight: 400; color: var(--text-muted); margin-top: 3px; display: block; }
+        /* card */
+        #questionWrap { display: none; }
+        .question-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 14px; padding: 32px; margin-bottom: 18px; }
+        .section-label { font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 700; color: var(--blue); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+        .question-text { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700; color: var(--navy); line-height: 1.3; margin-bottom: 10px; }
+        .ref-text { font-size: 12px; color: var(--text-muted); font-style: italic; margin-bottom: 20px; }
+        .note-box { background: var(--light-blue); border-radius: 8px; padding: 13px 15px; display: flex; gap: 10px; margin-bottom: 20px; }
+        .note-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+        .note-text { font-size: 13.5px; color: #2a3a5c; line-height: 1.55; }
+        .ext-link { display: inline-flex; align-items: center; gap: 5px; font-size: 12.5px; font-weight: 600; color: var(--blue); text-decoration: none; border: 1px solid rgba(47,84,150,0.25); border-radius: 6px; padding: 5px 10px; margin-bottom: 20px; }
+        .ext-link:hover { background: var(--light-blue); }
+        /* buttons */
+        .btn-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .btn { font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; padding: 11px 28px; cursor: pointer; transition: background 150ms var(--ease), transform 100ms; }
+        .btn:active { transform: scale(0.98); }
+        .btn-flag { background: #FFF3CD; color: #856404; border: 1px solid #ffc107; }
+        .btn-flag:hover { background: #ffe69c; }
+        .btn-ok { background: var(--light-blue); color: var(--navy); border: 1px solid rgba(47,84,150,0.2); }
+        .btn-ok:hover { background: #dde8f7; }
+        .btn-back { background: transparent; color: var(--text-muted); border: 1px solid var(--border); font-size: 13px; padding: 10px 18px; }
+        .btn-back:hover { color: var(--navy); border-color: var(--blue); }
+        /* flag box */
+        .flag-box { background: var(--amber-light); border: 1px solid #EF9F27; border-radius: 8px; padding: 13px 15px; margin-top: 16px; display: none; font-size: 13.5px; color: #633806; line-height: 1.55; }
+        .flag-box .flag-title { font-family: 'Outfit', sans-serif; font-weight: 700; margin-bottom: 4px; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--amber); }
+        /* summary */
+        #summaryWrap { display: none; background: var(--white); border: 0.5px solid var(--border); border-radius: 14px; padding: 32px; }
+        .summary-heading { font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+        .summary-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 28px; }
+        .summary-section { margin-bottom: 24px; }
+        .summary-section-title { font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
+        .summary-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--border); font-size: 13.5px; }
+        .summary-item:last-child { border-bottom: none; }
+        .summary-icon { flex-shrink: 0; width: 20px; text-align: center; font-size: 13px; }
+        .summary-item-text { flex: 1; }
+        .summary-item-label { font-family: 'Outfit', sans-serif; font-weight: 600; color: var(--navy); font-size: 13px; margin-bottom: 2px; }
+        .summary-item-flag { color: #856404; font-size: 12.5px; margin-top: 4px; }
+        .btn-restart { margin-top: 24px; background: var(--navy); color: white; border: none; }
+        .btn-restart:hover { background: var(--blue-dark); }
+    </style>
+</head>
+<body>
+<header class="site-header">
+    <div class="header-inner">
+        <div class="header-left">
+            <div class="shp-mark">SHP</div>
+            <div class="header-titles">
+                <span class="firm-name">Steve Hunt Partnership</span>
+                <span class="tool-name">Warrington SPD Checker</span>
+            </div>
+        </div>
+        <div class="header-links">
+            <a href="https://www.warrington.gov.uk/sites/default/files/2021-06/house_extensions_supplementary_planning_document_-_june_2021.pdf" target="_blank" rel="noopener" class="spd-doc-link">📄 WBC House Extensions SPD</a>
+            <a href="spd-checker.html" class="back-link">← Back</a>
+        </div>
+    </div>
+</header>
+<div class="type-bar"><div class="type-bar-inner">Warrington Borough Council — <span id="typeBarLabel">Select extension type below</span></div></div>
+<div class="progress-bar-wrap">
+    <div class="progress-bar-inner">
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <span class="progress-label" id="progressLabel">—</span>
+    </div>
+</div>
+<main>
+    <!-- Type selection -->
+    <div id="typeSelectWrap">
+        <p style="font-family:'Outfit',sans-serif;font-size:11px;font-weight:600;color:var(--blue);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Step 1</p>
+        <h1 style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:700;color:var(--navy);margin-bottom:8px;letter-spacing:-0.3px;">What type of development are you checking?</h1>
+        <p style="font-size:14px;color:var(--text-sub);margin-bottom:4px;">Select the extension type to begin the Warrington SPD policy check. General site questions follow, then type-specific guidance.</p>
+        <div class="type-grid">
+            <button class="type-btn" onclick="startCheck('rear')">Rear extension<span class="type-btn-sub">Single or two storey</span></button>
+            <button class="type-btn" onclick="startCheck('side')">Side extension<span class="type-btn-sub">Including corner plots</span></button>
+            <button class="type-btn" onclick="startCheck('roof')">Roof extension / dormer<span class="type-btn-sub">Dormers, hip-to-gable</span></button>
+            <button class="type-btn" onclick="startCheck('front')">Front extension / porch<span class="type-btn-sub">Front elevation additions</span></button>
+            <button class="type-btn" onclick="startCheck('outbuilding')">Detached outbuilding<span class="type-btn-sub">Garages, garden rooms, sheds</span></button>
+        </div>
+    </div>
+    <!-- Question -->
+    <div id="questionWrap">
+        <div class="question-card">
+            <div class="section-label" id="sectionLabel"></div>
+            <div class="question-text" id="questionText"></div>
+            <div class="ref-text" id="refText"></div>
+            <div class="note-box">
+                <span class="note-icon">ℹ</span>
+                <span class="note-text" id="noteText"></span>
+            </div>
+            <div id="extLinkWrap" style="display:none"><a href="#" target="_blank" rel="noopener" class="ext-link" id="extLink">↗ <span id="extLinkLabel"></span></a></div>
+            <div class="btn-row">
+                <button class="btn btn-flag" onclick="answer('flag')">⚑ Flag — needs checking</button>
+                <button class="btn btn-ok" onclick="answer('ok')">✓ Addressed / not applicable</button>
+            </div>
+            <div class="flag-box" id="flagBox">
+                <div class="flag-title">⚑ Action required</div>
+                <div id="flagText"></div>
+            </div>
+        </div>
+        <div style="margin-top:4px;">
+            <button class="btn btn-back" onclick="goBack()">← Back</button>
+        </div>
+    </div>
+    <!-- Summary -->
+    <div id="summaryWrap">
+        <div class="summary-heading">Policy check complete</div>
+        <p class="summary-sub" id="summaryTypeLine"></p>
+        <div id="summaryFlagged" class="summary-section" style="display:none">
+            <div class="summary-section-title">⚑ Items flagged — action or further checking required</div>
+            <div id="summaryFlaggedList"></div>
+        </div>
+        <div id="summaryOk" class="summary-section">
+            <div class="summary-section-title">✓ Items addressed or not applicable</div>
+            <div id="summaryOkList"></div>
+        </div>
+        <div style="padding:16px;background:var(--light-blue);border-radius:8px;font-size:13px;color:#2a3a5c;margin-top:8px;">
+            <strong>Note:</strong> This checker is a pre-application prompt tool based on Warrington Borough Council's House Extensions SPD (June 2021). It does not replace professional advice or a formal pre-application enquiry. Always refer to the full SPD document and discuss complex cases with the LPA at pre-application stage.
+            <br><br>
+            <a href="https://www.warrington.gov.uk/sites/default/files/2021-06/house_extensions_supplementary_planning_document_-_june_2021.pdf" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600;">📄 Open WBC House Extensions SPD</a>
+        </div>
+        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-restart" onclick="restart()">Start new check</button>
+            <button class="btn btn-back" onclick="restartType()">Change extension type</button>
+        </div>
+    </div>
+</main>
+<script>
+const TYPE_LABELS = {rear:'Rear extension',side:'Side extension',roof:'Roof extension / dormer',front:'Front extension / porch',outbuilding:'Detached outbuilding'};
+const TYPE_SEQUENCES = {
+    rear:        ['g1','g2','g3','g4','g5','g6','g7','g8','g9','g10','g11','g12','g13','r1','r2','r3'],
+    side:        ['g1','g2','g3','g4','g5','g6','g7','g8','g9','g10','g11','g12','g13','s1','s2','s3','s4','s5'],
+    roof:        ['g1','g2','g3','g4','g5','g6','g7','g8','g9','g10','g11','g12','g13','ro1','ro2','ro3','ro4'],
+    front:       ['g1','g2','g3','g4','g5','g6','g7','g8','g9','g10','g11','g12','g13','f1','f2','f3'],
+    outbuilding: ['g1','g2','g3','g4','g5','g6','g7','g8','g9','g10','g11','g12','g13','o1','o2']
+};
+const STEPS = {};
+
+const STEPS_DATA = {
+  'g1': {label:'Green belt',question:'Is the property located within the Green Belt?',ref:'WBC SPD s2.4 — NPPF paragraph 145(c)',note:'Development in the Green Belt is inappropriate unless it does not result in a disproportionate addition to the original building. Any extension or outbuilding adding more than 33% to the original building\\\'s volume or floorspace will be considered disproportionate and likely refused. All previous extensions and detached buildings count toward this figure. Calculations of original, existing, and proposed volume and floorspace will be required with the application.',flag:'If YES: calculate original, existing, and proposed volume and floorspace. Any increase over 33% on the original building is likely to be refused unless very special circumstances can be demonstrated.',link:'https://www.planning.data.gov.uk/map/?',link_label:'Check on Planning Data Map'},
+  'g2': {label:'Conservation area / listed building',question:'Is the property within a conservation area, or is it a listed (or locally listed) building?',ref:'WBC SPD s2.4.1 — NPPF heritage; WBC Core Strategy QE8',note:'Conservation areas and listed buildings require a higher level of justification and design quality. Extensions should be subordinate to the original building, use sympathetic materials, and retain original features. Listed buildings require a Heritage Impact Assessment and Listed Building Consent in addition to planning permission. Engage the LPA conservation officer at pre-application stage.',flag:'If YES: Heritage Impact Assessment likely required. Extensions must be subordinate and use sympathetic materials. Listed buildings need LBC. Pre-application engagement with the conservation officer is strongly recommended.',link:'https://www.planning.data.gov.uk/map/?',link_label:'Check on Planning Data Map'},
+  'g3': {label:'Flood risk',question:'Is the property in Flood Zone 2 or 3, or within a critical drainage area?',ref:'WBC SPD s2.5.3 — WBC Core Strategy QE4',note:'Properties in Flood Zone 2 or 3 require flood-proofing measures in the design — internal floor heights of the extension should be no lower than the main house, and electrical sockets at least 45cm above internal floor level. Check the Environment Agency flood risk for planning maps at flood-map-for-planning.service.gov.uk.',flag:'If YES: flood-proofing measures are required. Floor heights no lower than main house. Electrical sockets at least 45cm above floor level. Reference EA flood risk maps in the application.',link:'https://www.planning.data.gov.uk/map/?',link_label:'Check on Planning Data Map'},
+  'g4': {label:'Trees',question:'Are there any TPO trees, trees within a conservation area, or other significant trees on or adjacent to the site?',ref:'WBC SPD s2.5.1 — BS 5837:2012',note:'Protected trees must be shown accurately on submitted plans. An arboricultural report (BS 5837:2012) is likely to be required. Extensions will not normally be allowed where the development would be overshadowed by protected trees, as this could create pressure to remove them. Trees and hedgerows should be retained and enhanced where possible.',flag:'If YES: an arboricultural report (BS 5837:2012) is likely required. Protected trees must be shown on plans. Avoid development that would be overshadowed by protected trees.',link:'https://www.planning.data.gov.uk/map/?',link_label:'Check on Planning Data Map'},
+  'g5': {label:'Ecology',question:'Could the property or site support protected species — bats, great crested newts, nesting birds, or other protected wildlife?',ref:'WBC SPD s2.5.2 — WBC Core Strategy QE5',note:'An ecological survey report will likely be required where protected species may be affected. Warrington\\\'s validation checklist states that a RAMS statement is acceptable where the site is within 250m of a pond with no other development between. Mitigation such as bat and bird boxes may be conditioned.',flag:'If YES: ecological survey report likely required before submission. Check the validation checklist for specific survey requirements. Mitigation measures (bat/bird boxes) may be required as conditions.',link:'https://www.warrington.gov.uk/sites/default/files/2024-04/Adopted%20Validation%20Checklist%20-%2028-3-24.pdf',link_label:'Warrington Validation Checklist'},
+  'g6': {label:'45-degree code',question:'Have you checked the 45-degree code — does the development avoid crossing the 45-degree line taken horizontally in plan from the centre of the nearest primary habitable room window of any neighbour? (Habitable rooms: living room, dining room, kitchen/diner, bedroom.)',ref:'WBC SPD s2.2.1 — 45 degree code',note:'The 45-degree line is drawn horizontally in plan from the centre of the neighbour\\\'s nearest primary habitable room window. The extension must not cross this line. Applied to ground floor and two-storey extensions, up to 12m along the 45-degree line. Both ground and first-floor windows are considered — the worst case is the determining factor. Exception: most properties can extend up to 3m from the original rear wall at ground floor without breaching the code.',flag:'If the extension crosses the 45-degree line: redesign required. Consider splaying or staggering the extension corners. Note the 3m ground-floor rear extension exception.'},
+  'g7': {label:'Blank wall / direct outlook',question:'Does the proposed development present a blank wall directly facing a neighbour\\\'s principal habitable room window, at a distance of less than 13 metres?',ref:'WBC SPD s2.2.3 — direct outlook; 13m separation',note:'Where a neighbour\\\'s principal habitable room window faces directly onto a blank elevation of an extension or outbuilding of over single storey, a minimum of 13 metres must be retained. Single storey extensions are assessed on a case-by-case basis. Where the 45-degree code does not apply, extensions or outbuildings over single storey must also provide a minimum 1m gap to a neighbour\\\'s boundary to avoid an overbearing impact on their garden. Any difference in ground levels between properties will be taken into account.',flag:'If YES and over single storey: minimum 13m from neighbour\\\'s ground-floor habitable room window to blank wall. Minimum 1m gap to neighbour\\\'s boundary where 45-degree code does not apply.'},
+  'g8': {label:'Privacy — window separation',question:'Do any new upper-floor windows face towards neighbouring habitable room windows or private garden areas?',ref:'WBC SPD s2.2.4 — privacy distances',note:'Principal habitable room windows in the extended property must be at least 21 metres from habitable room windows in neighbouring houses (measured directly). A minimum of 10 metres must be retained from any new window to a boundary shared with a neighbour\\\'s private garden. Side elevation windows to habitable rooms should be avoided — use obscure glazing, high-level windows, or rooflights where side windows are necessary.',flag:'If YES: check 21m separation to any neighbouring habitable room window and 10m to neighbour\\\'s garden boundary. Consider obscure glazing or high-level windows for side elevations.'},
+  'g9': {label:'Raised terraces / balconies',question:'Does the proposal include any raised terrace, roof terrace, balcony, or raised patio area?',ref:'WBC SPD s2.2.4 — raised terraces and balconies',note:'Raised terraces and balconies can result in an unacceptable degree of overlooking to neighbouring properties. The same privacy distances apply: 21m to habitable room windows, 10m to garden boundary. Permanent screening of acceptable design must be incorporated if distances cannot be achieved.',flag:'If YES: ensure 21m separation to habitable room windows and 10m to garden boundary, or incorporate permanent screening of acceptable design that does not itself raise other design or amenity issues.'},
+  'g10': {label:'Parking — bedroom count',question:'Will the extension increase the number of bedrooms, or reduce the existing off-street parking provision?',ref:'WBC SPD s2.3 — parking standards',note:'Where a proposal increases bedroom numbers or reduces parking, provision must meet Warrington\\\'s standards: 1-bed = 1 space; 2–3 bed = 2 spaces; 4+ bed = 3 spaces. Parking should not dominate the front — retain some soft landscaping. Permeable surfacing is encouraged.',flag:'If YES: calculate required parking against the standards and ensure minimum provision is met. Avoid excessive hard surfacing. Include soft landscaping. Show parking on submitted plans.'},
+  'g11': {label:'Parking — dimensions',question:'Does the parking provision meet minimum dimensions — standard space 2.5m × 5.0m; single garage 7m × 3m or 6m × 3.5m (door min 2.5m wide)?',ref:'WBC SPD s2.3.1 / s2.3.2 — parking and garage dimensions',note:'Standard single space: 2.5m × 5.0m (5.5m if in front of outward-opening garage door). Minimum driveway width: 3.3m (reducible to 2.5m with separate pedestrian access). Driveway gradient: max 1:12.5 (8%) for first 5m from highway. First 5m of private drive must not use loose or granular material. Ensure adequate visibility splays — refer to Council Standards for Parking in New Development 2015.',flag:'If NO: redesign parking layout to meet minimum dimensions. Check gradient. Confirm visibility splays are adequate.'},
+  'g12': {label:'Design — character',question:'Do the materials, roof pitch, window proportions, and overall scale complement the existing house and the character of the surrounding area?',ref:'WBC SPD s2.1.2 / s2.1.3 — design and contemporary designs',note:'Extensions should be subordinate in scale to the host building. Materials, roof pitch, and window proportions should match or complement the existing house. New brickwork on prominent elevations should be set back at least one brick course to avoid bonding issues. Contemporary designs are more acceptable where not widely visible from the street — design justification should be provided.',flag:'If NO: revise materials, roof pitch, and window design to complement the existing house and area character. Provide design justification for any contemporary or contrasting approach.'},
+  'g13': {label:'Bin storage / rear access',question:'If the extension removes external access to the rear, has provision for bin storage been incorporated in a discreet, screened location?',ref:'WBC SPD s2.1.4 — bin storage; s2.1.1 — space around dwellings',note:'Where an extension removes rear access, an internal access route should normally be provided. Bin storage must not intrude on the street scene or neighbours. In front-of-house or prominent side locations, bins should be housed or screened with suitable materials at an appropriate scale.',flag:'If YES and access is removed: incorporate and show an alternative bin storage and access solution on the drawings, screened from the street scene.'},
+  'r1': {label:'Rear — depth along boundary',question:'For a single-storey extension along the shared boundary, does the depth from the original rear elevation remain at or below 3 metres?',ref:'WBC SPD s2.6.4 — rear extensions',note:'For a single-storey extension along the shared boundary with an adjoining house, a depth of 3m from the original rear elevation may be acceptable. This may be increased where the immediately adjoining property also has an extension along the shared boundary at the same location.',flag:'If NO: the depth may be acceptable only if the immediately adjoining property also has an extension along the shared boundary. Otherwise revise to 3m or less.'},
+  'r2': {label:'Rear — over single storey near boundary',question:'If the extension is over single storey, is a minimum 1-metre gap retained between the extension and the neighbour\\\'s boundary (where the 45-degree code does not apply)?',ref:'WBC SPD s2.6.4; s2.2.3',note:'Extensions over single storey are more likely to be acceptable if set away from neighbour\\\'s boundaries. Where the 45-degree code does not apply, a minimum 1m gap to the neighbour\\\'s boundary is required to avoid an overbearing impact on their garden area.',flag:'If NO: provide minimum 1m gap to neighbour\\\'s boundary for any element over single storey, where the 45-degree code does not otherwise apply.'},
+  'r3': {label:'Rear — flat roof terrace',question:'If the extension has a flat roof and a terrace or balcony use is proposed, are permanent screening measures incorporated?',ref:'WBC SPD s2.6.4 — flat roofs and terraces',note:'Terrace areas on flat roofs can result in serious overlooking of neighbouring properties and gardens. Screening must be permanent and of acceptable design. Privacy distances apply: 10m to garden boundary, 21m to neighbour\\\'s habitable room window.',flag:'If YES: permanent screening of acceptable design required. Confirm privacy distances are maintained (10m garden boundary, 21m habitable room windows).'},
+  's1': {label:'Side — width',question:'Is the side extension 50% or less of the width of the original house?',ref:'WBC SPD s2.6.2 — side extension width',note:'Side extensions should not be greater than 50% of the width of the original house. This maintains the balance and symmetry of the property. Larger extensions can over-dominate the original house and detract from its appearance, particularly for semi-detached properties.',flag:'If NO: the extension exceeds the 50% width guideline. Reduce width or provide strong design justification for the wider addition.'},
+  's2': {label:'Side — first-floor boundary gap',question:'At first-floor level and above, is a minimum 1-metre gap retained between the extension and the side boundary?',ref:'WBC SPD s2.6.2 — 1m boundary gap',note:'A 1m gap must be maintained at first-floor level and above to avoid a terracing effect and retain space between dwellings. This applies even where an existing ground-floor extension projects to the boundary and a first floor is proposed above it. Detached properties should retain minimum 1m to each side boundary.',flag:'If NO: redesign to maintain minimum 1m gap at first-floor level and above. This is a strong policy requirement.'},
+  's3': {label:'Side — roof pitch and form',question:'Does the roof on the proposed extension match the original house in pitch (steepness) and form (gable or hip)?',ref:'WBC SPD s2.6.2 — roof design',note:'The extension roof should match the original in pitch and shape. This is important for the visual coherence of the property and the street scene.',flag:'If NO: revise roof design to match the pitch and form of the original house. Provide design justification for any different roof form.'},
+  's4': {label:'Side — set-back from front',question:'Is the extension set back to some degree from the main front elevation?',ref:'WBC SPD s2.6.2 — set-back from front',note:'Side extensions should have some degree of set-back from the main front elevation, or a lower ridge line, to clearly demarcate the new addition from the original house and retain its character.',flag:'If NO: incorporate a set-back from the front elevation or a lower ridge height to visually demarcate the extension.'},
+  's5': {label:'Side — corner plot',question:'Is the property on a corner plot (fronting a road on two or more boundaries)?',ref:'WBC SPD s2.6.3 — corner plots',note:'Corner plot extensions must not project beyond the front elevation of properties on adjacent roads where there is a consistent building line. Extension width must not exceed 50% of the original house frontage or 50% of the garden/plot between the house and the adjacent highway. Extensions over single storey must be set back from the front, have a lower ridge height, and not extend beyond the rear of the house.',flag:'If YES: apply corner plot rules — max 50% of frontage/garden width; over single storey must be set back, lower ridge, not beyond rear.'},
+  'ro1': {label:'Roof — subordinate scale',question:'Is the dormer or roof extension subordinate in scale to the overall roof — not dominating the roof plane or street scene?',ref:'WBC SPD s2.6.5',note:'Dormers should always appear as subordinate elements of the roof. Height and length should be kept to a minimum. Large flat-roof front dormers are unlikely to be acceptable unless they are an established feature in the immediate surroundings.',flag:'If NO: reduce the scale of the dormer so it is clearly subordinate to the main roof. Avoid large flat-roof front dormers unless justified by local precedent.'},
+  'ro2': {label:'Roof — ridge height',question:'Does the roof extension remain at or below the existing ridge height?',ref:'WBC SPD s2.6.5 — ridge height',note:'Raising the ridge is generally unacceptable for semi-detached and terraced houses and bungalows. Some increase may be possible for detached houses with more space around them, provided it does not appear over-dominant.',flag:'If NO: raising the ridge is likely to be resisted for semi-detached, terraced, and bungalow properties. Revise design to stay within the existing ridge height.'},
+  'ro3': {label:'Roof — set-back',question:'Is the dormer set in from the eaves, the ridge, and the sides of the existing roof slope?',ref:'WBC SPD s2.6.5 — dormer set-back',note:'Dormers must be set in from the eaves, ridge, and sides of the roof. The extent of set-back should be proportionate to the roof size. Rear dormers can be flat-roofed but should still be set in from the eaves and sides.',flag:'If NO: revise the dormer design to ensure adequate set-back from eaves, ridge, and sides of the roof slope.'},
+  'ro4': {label:'Roof — front dormer design',question:'If the dormer is front-facing, does it have a pitched or sloping roof and does it align with and match the existing windows in style and proportions?',ref:'WBC SPD s2.6.5 — front dormers',note:'Front dormers should normally have a pitched or sloping roof. They should align with and match the style and proportions of existing windows. Large flat-roof front dormers are unlikely to be acceptable unless they are an established feature locally.',flag:'If NO: revise the front dormer to have a pitched/sloping roof, align with existing windows, and match window proportions. Justify any flat-roof front dormer by local precedent.'},
+  'f1': {label:'Front — projection and building line',question:'Is the projection minimal and does it respect any building line formed by adjacent properties?',ref:'WBC SPD s2.6.1 — front extensions',note:'Any front extension should have a minimal projection and should not project noticeably beyond the building line formed by neighbouring houses where a consistent line exists.',flag:'If NO: reduce projection and align with the building line of neighbouring properties.'},
+  'f2': {label:'Front — height',question:'Is the ridge height of the front extension lower than the original roof, and for a porch, is the height below the sill of first-floor windows?',ref:'WBC SPD s2.6.1 — front extension height',note:'The ridge of any front extension should be lower than the original roof to remain subordinate. For a porch, the height must not exceed the sill height of the first-floor windows.',flag:'If NO: lower the ridge height to be subordinate to the original roof. Ensure porch height stays below first-floor window sill level.'},
+  'f3': {label:'Front — semi-detached / terraced',question:'If semi-detached or terraced, does the front extension avoid harming the appearance of the matched pair or group?',ref:'WBC SPD s2.6.1 — pair or group',note:'A front extension to a semi-detached or terraced house can harm the visual balance of a matched pair or group. The effect on the appearance of the pair or group as a whole is an important consideration for the council.',flag:'If YES and harmful: reconsider the design to minimise impact on the pair or group. Strongly asymmetric additions to a symmetrical pair are likely to be resisted.'},
+  'o1': {label:'Outbuilding — position',question:'Is the outbuilding positioned behind the principal elevation (not between the house and the highway)?',ref:'WBC SPD s2.6.6 — detached outbuildings',note:'Outbuildings positioned between the main house and the highway are likely to appear intrusive in the street scene. Boundary fencing or planting will not be accepted as a mitigating factor.',flag:'If NO: reposition the outbuilding behind the principal elevation. An intrusive position in the street scene will not be mitigated by screening.'},
+  'o2': {label:'Outbuilding — scale and design',question:'Does the outbuilding harmonise with the design of the existing house and is it of a scale that does not dominate the property or appear intrusive?',ref:'WBC SPD s2.1.2; s2.6.6',note:'Outbuildings are subject to the same design considerations as extensions. They should reflect or harmonise with the existing house and not dominate the property or the street scene. Contemporary designs are more acceptable where not widely visible from the street.',flag:'If NO: revise design to harmonise with the host dwelling. Reduce scale if it dominates. Provide design justification for any contemporary approach.'}
+};
+
+let currentType = null;
+let sequence = [];
+let currentIdx = 0;
+let results = [];
+
+function startCheck(type) {
+    currentType = type;
+    sequence = TYPE_SEQUENCES[type];
+    currentIdx = 0;
+    results = [];
+    document.getElementById('typeSelectWrap').style.display = 'none';
+    document.getElementById('summaryWrap').style.display = 'none';
+    document.getElementById('questionWrap').style.display = 'block';
+    document.getElementById('typeBarLabel').textContent = TYPE_LABELS[type];
+    renderQuestion();
+}
+
+function renderQuestion() {
+    var id = sequence[currentIdx];
+    var s = STEPS_DATA[id];
+    document.getElementById('sectionLabel').textContent = s.label;
+    document.getElementById('questionText').textContent = s.question;
+    document.getElementById('refText').textContent = s.ref;
+    document.getElementById('noteText').textContent = s.note;
+    document.getElementById('flagBox').style.display = 'none';
+    // ext link
+    var lw = document.getElementById('extLinkWrap');
+    if (s.link) {
+        document.getElementById('extLink').href = s.link;
+        document.getElementById('extLinkLabel').textContent = s.link_label || 'Open resource';
+        lw.style.display = 'block';
+    } else { lw.style.display = 'none'; }
+    // progress
+    var pct = Math.round((currentIdx / sequence.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressLabel').textContent = 'Question ' + (currentIdx+1) + ' of ' + sequence.length;
+}
+
+function answer(result) {
+    var id = sequence[currentIdx];
+    var s = STEPS_DATA[id];
+    if (result === 'flag') {
+        var fb = document.getElementById('flagBox');
+        document.getElementById('flagText').textContent = s.flag;
+        fb.style.display = 'block';
+        // record and auto-advance after short delay so user can read the flag
+        results.push({id:id, label:s.label, result:'flag', flag:s.flag});
+        setTimeout(nextQuestion, 2200);
+    } else {
+        results.push({id:id, label:s.label, result:'ok', flag:s.flag});
+        nextQuestion();
+    }
+}
+
+function nextQuestion() {
+    currentIdx++;
+    if (currentIdx >= sequence.length) {
+        showSummary();
+    } else {
+        document.getElementById('flagBox').style.display = 'none';
+        renderQuestion();
+    }
+}
+
+function goBack() {
+    if (currentIdx === 0) {
+        restartType();
+        return;
+    }
+    currentIdx--;
+    results.pop();
+    document.getElementById('flagBox').style.display = 'none';
+    renderQuestion();
+}
+
+function showSummary() {
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = 'Complete';
+    document.getElementById('questionWrap').style.display = 'none';
+    var sw = document.getElementById('summaryWrap');
+    sw.style.display = 'block';
+    document.getElementById('summaryTypeLine').textContent = TYPE_LABELS[currentType] + ' — ' + results.length + ' items checked';
+    var flagged = results.filter(r => r.result === 'flag');
+    var ok = results.filter(r => r.result === 'ok');
+    var fw = document.getElementById('summaryFlagged');
+    var fl = document.getElementById('summaryFlaggedList');
+    fl.innerHTML = '';
+    if (flagged.length > 0) {
+        fw.style.display = 'block';
+        flagged.forEach(function(r) {
+            var d = document.createElement('div');
+            d.className = 'summary-item';
+            d.innerHTML = '<div class="summary-icon">⚑</div><div class="summary-item-text"><div class="summary-item-label">' + r.label + '</div><div class="summary-item-flag">' + r.flag + '</div></div>';
+            fl.appendChild(d);
+        });
+    } else { fw.style.display = 'none'; }
+    var ol = document.getElementById('summaryOkList');
+    ol.innerHTML = '';
+    ok.forEach(function(r) {
+        var d = document.createElement('div');
+        d.className = 'summary-item';
+        d.innerHTML = '<div class="summary-icon" style="color:#2d6a4f">✓</div><div class="summary-item-text"><div class="summary-item-label">' + r.label + '</div></div>';
+        ol.appendChild(d);
+    });
+}
+
+function restart() {
+    document.getElementById('summaryWrap').style.display = 'none';
+    document.getElementById('questionWrap').style.display = 'none';
+    document.getElementById('typeSelectWrap').style.display = 'block';
+    document.getElementById('typeBarLabel').textContent = 'Select extension type below';
+    document.getElementById('progressFill').style.width = '0%';
+    document.getElementById('progressLabel').textContent = '—';
+}
+
+function restartType() {
+    document.getElementById('summaryWrap').style.display = 'none';
+    document.getElementById('questionWrap').style.display = 'none';
+    document.getElementById('typeSelectWrap').style.display = 'block';
+}
+
+</script>
+</body>
+</html>
